@@ -9,15 +9,13 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import { Container, Header, Content, Form, Item,  Label} from 'native-base';
+
 //import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
 
 
 export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    header: null,
-   
-  };
+  
 
   render() {
     return (

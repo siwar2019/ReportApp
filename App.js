@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SafeAreaView from 'react-native-safe-area-view';
 import ReportScreen from './Components/ReportScreen' ;
+import IncidentScreen from './Components/IncidentScreen' ;
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import HomeScreen from './Components/HomeScreen';
@@ -13,8 +15,36 @@ import AcceuilScreen from './Components/AcceuilScreen';
 import AppelScreen from './Components/AppelScreen';
 import ChatbotScreen from './Components/ChatbotScreen';
 import InscriptionScreen from './Components/InscriptionScreen';
+import Icon from 'react-native-ionicons'
 
+function StackScreenChat() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="ChatBot"
+        component={ChatbotScreen}
+        options={{ title: 'chatbot' }}
+      />
+    </Stack.Navigator>
+  );
+}
+function StackScreenAppel() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Appel"
+        component={AppelScreen}
+        options={{ title: 'call emergency', headerTintColor: '#410252',
+        headerTitleStyle: {
+          fontWeight: 'bold', } 
+        
 
+        }}
+
+      />
+    </Stack.Navigator>
+  );
+}
 /*
 function Screen({ navigation }) {
   return (
@@ -34,14 +64,19 @@ function Navigation({ navigation }) {
    
       return (
        
-          <Tab.Navigator>
-            <Tab.Screen name="Acceuil" component={AcceuilScreen} 
+          <Tab.Navigator 
+          
+          >
+            <Tab.Screen name="Acceuil" component={AcceuilScreen}  //thezna el page acceuil screen
           
               />
-            <Tab.Screen name="Call" component={AppelScreen} />
-            <Tab.Screen name="go streaming" component={StreamingScreen} />
-            <Tab.Screen name="Report" component={ReportScreen} />
-            <Tab.Screen name="Chatbot" component={ChatbotScreen} />
+            <Tab.Screen name="Call urgency " component={StackScreenAppel}  />
+            <Tab.Screen name="Incident" component={IncidentScreen} />
+            <Tab.Screen name="Report" component={ReportScreen}   />
+            <Tab.Screen name="Chatbot" component={StackScreenChat} />
+            
+
+
           
 
           </Tab.Navigator>
@@ -57,6 +92,8 @@ const Stack = createStackNavigator();
 //navigation c'est une fonction non pas une page, donc najmou nzidou d'autres interfaces 
 export default function App() {
   return (
+    
+    
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator headerMode="none">
@@ -68,7 +105,12 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
+   
   );
+
+
+
+  
 }
 
 const styles = StyleSheet.create({
