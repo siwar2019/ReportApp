@@ -1,12 +1,13 @@
-import React from 'react';
-import { Container, Header, Content, Title,List,  ListItem, InputGroup, Input,Icon,Footer, FooterTab, Button, Text, View,TouchableHighlight,Image,StyleSheet } from 'react-native';
-import { Row } from 'native-base';
-import { ScrollView } from 'react-native-gesture-handler';
-import Modal from "react-native-modal";
+import React, { Component } from "react";
+import { Button, Text, View } from "react-native";
+import Modal  from "react-native-modal";
+import { TouchableHighlight,Image,StyleSheet ,ScrollView,Picker} from 'react-native';
+import { Form } from "native-base";
+import {ListItem, List,Icon,InputGroup, Input} from 'native-base' ;
+import RNPickerSelect from 'react-native-picker-select';
 
-//import ImageButton from "react-native-img-button";
-export default class IncidentScreen extends React.Component {
-
+export default class IncidentScreen extends Component {
+ 
   state = {
     isModalVisible: false
   };
@@ -14,55 +15,103 @@ export default class IncidentScreen extends React.Component {
   toggleModal = () => {
     this.setState({ isModalVisible: !this.state.isModalVisible });
   };
-  onPressButton() {
-    console.log("Pressed!");
-  }
-  render() {
-    return (
-      
-      <ScrollView>
-
-    
-
-  <View>
-  
-    <View style={styles.padding}>
-      <Text> What is the type of your incident? please shoose a category</Text>
+ 
+ 
+    render() {
+      return (
+     
+        <ScrollView>
+      <View style={{ flex: 1 }}>
+          <View style={styles.padding}>
+      <Text> </Text>
+      <Text> Please shoose the way that you want to declare the incident with:</Text>
     </View>
-    <TouchableHighlight onPress={() => this.toggleModal()}>
-        <Image style={styles.imagestyle} source={require('../assets/carcrush.jpg')} />
-       
-
+        <TouchableHighlight onPress={this.toggleModal}>
+          <Image style={styles.imagestyle}  source={require('../assets/photo.png')} />
+        </TouchableHighlight>
+        <View style={styles.padding}></View>
+        <TouchableHighlight onPress={this.toggleModal}>
+          <Image style={styles.imagestyle}  source={require('../assets/video5.jpg')} />
+        </TouchableHighlight>
+        <View style={styles.padding}></View>
+        <TouchableHighlight onPress={() => this.toggleModal()}>
+        <Image style={styles.imagestyle} source={require('../assets/live3.png')} />
     </TouchableHighlight>
-  </View>
 
-  <View>
-      <View style={styles.padding}></View>
-      <TouchableHighlight onPress={() => this.onPressButton()}>
-          <Image style={styles.imagestyle} source={require('../assets/fire2.jpg')} />
-      </TouchableHighlight>
-</View>
+          <Modal isVisible={this.state.isModalVisible}>
+            <View style={{ flex: 1 }}>
+               
+            <ScrollView>
+              <Form  >
+           
+   
+                    <ListItem >
+                    <Text style={styles.form}>Firstname :</Text>
+                        <InputGroup >
+                        
+                            <Input inlineLabel label='FIRSTNAME' placeholder=' First name here' />
+                        </InputGroup>
+                    </ListItem>
+                    <ListItem>
+                    <Text style={styles.form}>lasttname :</Text>
+                        <InputGroup >
+                        
+                            <Input inlineLabel label='FIRSTNAME' placeholder=' Last name here' />
+                        </InputGroup>
+                    </ListItem>
+                
+                    
+                    <ListItem>
+                        <InputGroup >
+                        <Text style={styles.form}>Number :</Text>
+                            <Input stackedLabel label='NUMERO' placeholder='Numéro de télephone' />
+                        </InputGroup>
+                    </ListItem>
 
-<View>
-    <View style={styles.padding}></View>
-    <TouchableHighlight onPress={() => this.onPressButton()}>
-        <Image style={styles.imagestyle} source={require('../assets/earchquake.jpg')} />
-    </TouchableHighlight>
-</View>
+                    <ListItem>
+                        <InputGroup >
+                        <Text style={styles.form}>your position :</Text>
+                        
+                        </InputGroup>
+                    </ListItem>
+                    <ListItem>
+                        <InputGroup >
+                        <Text style={styles.form}>Description</Text>
+                        <Input stackedLabel label='description' placeholder='Describe your incident here' />
+                         
+                        </InputGroup>
+                    </ListItem>
 
-<View>
-    <View style={styles.padding}></View>
-    <TouchableHighlight onPress={() => this.onPressButton()}>
-        <Image style={styles.imagestyle} source={require('../assets/flood2.png')} />
-    </TouchableHighlight>
-</View>
+                    <ListItem>
+                        <InputGroup >
+                        <Text style={styles.form}>your position :</Text>
+                        </InputGroup>
+                    </ListItem>
+                    <ListItem>
+                        <InputGroup >
+                        <Text style={styles.form}> the incident's type :</Text>
+                        <Picker style={styles.picker} selectedValue = "gggg">
+               <Picker.Item label = "accident" value = "accident" />
+               <Picker.Item label = "flood" value = "floof" />
+               <Picker.Item label = "earthquake" value = "earthquake" />
+               <Picker.Item label = "fire" value = "fire" />
 
-
-</ScrollView>
-    );
+            </Picker>
+             </InputGroup>
+             
+                    </ListItem>
+                   
+                   
+              </Form>
+              </ScrollView>
+              <Button title="OK!" onPress={this.toggleModal} />
+            </View>
+          </Modal>
+        </View>
+        </ScrollView>
+      );
+    }
   }
-}
-
 let styles = StyleSheet.create({
   
   imagestyle: {
@@ -79,6 +128,16 @@ let styles = StyleSheet.create({
     paddingTop:20,
     paddingBottom:20,
 
+  },
+  form:{
+    color:'red',
+    fontWeight: 'bold'
+  },
+  picker: {
+    flex:1,
+    fontWeight:"bold",
+    fontSize:30,
+    color:'#0000FF'
   }
  
 });

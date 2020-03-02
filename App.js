@@ -25,6 +25,7 @@ function StackScreenIncident() {
         component={IncidentScreen}
         options={{ title: 'Report an incident' }}
       />
+      
     </Stack.Navigator>
   );
 }
