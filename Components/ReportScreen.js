@@ -1,28 +1,27 @@
-import React from 'react';
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  Button,
-  View,
-  
-} from 'react-native';
-
-
-export default class ReportlScreen extends React.Component {
-  static navigationOptions = {
-    header: null,
+import React, { Component } from "react";
+import { Button, Text, View } from "react-native";
+import Modal from "react-native-modal";
+ 
+export default class ReportScreen extends Component {
+  state = {
+    isModalVisible: false
   };
-
+ 
+  toggleModal = () => {
+    this.setState({ isModalVisible: !this.state.isModalVisible });
+  };
+ 
   render() {
     return (
-      <View >
-        <Text>HI C'EST reportt </Text>
+      <View style={{ flex: 1 }}>
+        <Button title="Show modal" onPress={this.toggleModal} />
+        <Modal isVisible={this.state.isModalVisible}>
+          <View style={{ flex: 1 }}>
+            <Text>Hello!</Text>
+            <Button title="Hide modal" onPress={this.toggleModal} />
+          </View>
+        </Modal>
       </View>
     );
   }
 }
-
-
-

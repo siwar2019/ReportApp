@@ -17,6 +17,19 @@ import ChatbotScreen from './Components/ChatbotScreen';
 import InscriptionScreen from './Components/InscriptionScreen';
 import Icon from 'react-native-ionicons'
 
+function StackScreenIncident() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Report an incident"
+        component={IncidentScreen}
+        options={{ title: 'Report an incident' }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+
 function StackScreenChat() {
   return (
     <Stack.Navigator>
@@ -37,8 +50,6 @@ function StackScreenAppel() {
         options={{ title: 'call emergency', headerTintColor: '#410252',
         headerTitleStyle: {
           fontWeight: 'bold', } 
-        
-
         }}
 
       />
@@ -71,13 +82,9 @@ function Navigation({ navigation }) {
           
               />
             <Tab.Screen name="Call urgency " component={StackScreenAppel}  />
-            <Tab.Screen name="Incident" component={IncidentScreen} />
+            <Tab.Screen name="Incident" component={StackScreenIncident} />
             <Tab.Screen name="Report" component={ReportScreen}   />
             <Tab.Screen name="Chatbot" component={StackScreenChat} />
-            
-
-
-          
 
           </Tab.Navigator>
         
