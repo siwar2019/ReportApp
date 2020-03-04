@@ -4,9 +4,9 @@ import Modal  from "react-native-modal";
 import { TouchableHighlight,Image,StyleSheet ,ScrollView,Picker,TouchableOpacity} from 'react-native';
 import { Form } from "native-base";
 import {ListItem, List,Icon,InputGroup, Input} from 'native-base' ;
-import RNPickerSelect from 'react-native-picker-select';
 import ImagePicker from 'react-native-image-picker';
 import ImagePicker2 from 'react-native-image-crop-picker';
+import { IconButton, Colors } from 'react-native-paper';
 export default class IncidentScreen extends Component {
   state = {
     photo: null,
@@ -47,15 +47,13 @@ ImagePicker.launchImageLibrary(options,response => {
   };
 
 
-
+//lunch camera photo
   launch=()=>{
     const options = {
       noData: true,
     };
     ImagePicker.launchCamera(options, (response) => {
       // Same code as in above section!
-  
- 
   console.log("response",response) ;
 });
   };
@@ -68,6 +66,17 @@ handleChooseMultiplePhoto=() => {
   console.log(images);
 });
 }
+//only galery video
+onlygaleryvideo=()=> {
+  ImagePicker2.openPicker({
+    multiple: true,
+    mediaType: "video",
+  }).then(images => {
+    console.log(images);
+  });
+  }
+//from camera video 
+ 
     render() {
       const { photo } = this.state;
 
@@ -142,8 +151,7 @@ handleChooseMultiplePhoto=() => {
                     <ListItem>
                       <InputGroup >
                         <Text style={styles.form}>your position :</Text>
-                        <Button title="Directly Launching the Camera "
-                        onPress={this.launch} />
+                        
                       </InputGroup>
                     </ListItem>
                     <ListItem>
@@ -162,9 +170,13 @@ handleChooseMultiplePhoto=() => {
                     <ListItem>
                       <InputGroup >
                         
-                        <Text style={styles.form}>upload image</Text>
-                        <Button title="shoose photo"
-                        onPress={this.handleChoosePhoto} />
+                        <Text style={styles.form}>shoose photo</Text>
+                        <IconButton onPress={this.handleChoosePhoto}
+                      icon="image"
+                      color={Colors.redA100}
+                      size={60}
+                     
+                    />  
                       </InputGroup>
                       {photo && (
                         <Image
@@ -172,13 +184,25 @@ handleChooseMultiplePhoto=() => {
                           style={{ width: 150, height: 150 }}
                         />
                       )}
+                      <TouchableOpacity  style={styles.button}
+                        onPress={this.handleChooseMultiplePhoto}
+                      >
+                        <Text> Add more</Text>
+                      </TouchableOpacity>
 
-                      <ScrollView >
-                        
-                           
-                          </ScrollView>
+                     
                     </ListItem>
 
+                    <Text> OR </Text>
+                    <Text style={styles.form} >Directly Launching the Camera  </Text>
+                    <IconButton onPress={this.launch}
+                      icon="instagram"
+                      color={Colors.redA100}
+                      size={60}
+                     
+                    />  
+                        
+                    
                   </Form>
                 </ScrollView>
                 <Button title="OK!" onPress={this.toggleModal} />
@@ -190,7 +214,7 @@ handleChooseMultiplePhoto=() => {
 
                 <ScrollView>
                   <Form  >
-
+                  
 
                     <ListItem >
                       <Text style={styles.form}>Firstname :</Text>
@@ -251,7 +275,12 @@ handleChooseMultiplePhoto=() => {
                         <Text style={styles.form}>upload your video :</Text>
                       </InputGroup>
                     </ListItem>
-
+                    <ListItem>
+                  <Button title="shoose VIDEO"
+                  onPress={this.onlygaleryvideo} />
+                  </ListItem> 
+                 
+                  
                   </Form>
                 </ScrollView>
                 <Button title="OK!" onPress={this.toggleModal2} />
