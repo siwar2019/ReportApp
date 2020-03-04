@@ -1,13 +1,23 @@
 import React, { Component } from "react";
 import { Button, Text, View } from "react-native";
 import Modal  from "react-native-modal";
-import { TouchableHighlight,Image,StyleSheet ,ScrollView,Picker,TouchableOpacity} from 'react-native';
+import { TouchableHighlight,Image,StyleSheet ,ScrollView,Picker,TouchableOpacity,NativeModules, Dimensions, StatusBar, SafeAreaView} from 'react-native';
 import { Form } from "native-base";
 import {ListItem, List,Icon,InputGroup, Input} from 'native-base' ;
 import ImagePicker from 'react-native-image-picker';
-import ImagePicker2 from 'react-native-image-crop-picker';
-import { IconButton, Colors } from 'react-native-paper';
+//import ImagePicker2 from 'react-native-image-crop-picker';
+import { IconButton, Colors,ActivityIndicator } from 'react-native-paper';
+var ImagePicker3 = NativeModules.ImageCropPicker;
 export default class IncidentScreen extends Component {
+ 
+  constructor() {
+    super();
+    this.state = {
+        image: null,
+        images: null
+    };
+}
+
   state = {
     photo: null,
   };
@@ -59,13 +69,52 @@ ImagePicker.launchImageLibrary(options,response => {
   };
 
 //multiple photos
-handleChooseMultiplePhoto=() => {
+/*handleChooseMultiplePhoto=() => {
+  const options = {
+    noData: true,
+  };
   ImagePicker2.openPicker({
-  multiple: true
+  
+  multiple: true,
 }).then(images => {
   console.log(images);
+  this.setState({ photo2: response2 });
 });
 }
+*/
+
+handleChooseMultiplePhoto() 
+    {
+        ImagePicker3.openPicker({
+            multiple: true,
+            waitAnimationEnd: false,
+            includeExif: true,
+            forceJpg: true,
+        }).then(images => {
+            this.setState({
+                image: null,
+                images: images.map(i => {
+                    console.log('received image', i);
+                    return {uri: i.path, width: i.width, height: i.height, mime: i.mime};
+                })
+            });
+        }).catch(e => alert(e));
+    }
+    scaledHeight(oldW, oldH, newW) {
+      return (oldH / oldW) * newW;
+  }
+
+  renderImage(image) {
+      return <Image style={{width: 200, height: 200, resizeMode: 'contain'}} source={image}/>
+  }
+
+  renderAsset(image) {
+      if (image.mime && image.mime.toLowerCase().indexOf('video/') !== -1) {
+          return this.renderVideo(image);
+      }
+
+      return this.renderImage(image);
+  }
 //only galery video
 onlygaleryvideo=()=> {
   ImagePicker2.openPicker({
@@ -85,7 +134,7 @@ onlygaleryvideo=()=> {
         <ScrollView>
           <View style={ {flex:1}}>
             <View style={styles.padding}>
-              <Text> </Text>
+             
               <Text> Please shoose the way that you want to declare the incident with:</Text>
             </View>
 
@@ -106,54 +155,23 @@ onlygaleryvideo=()=> {
             <Modal style={styles.view} isVisible={this.state.isModalVisible}>
               
               <View style={{ flex: 1 }}>
-
+              <Text style={{fontSize:20,fontWeight:"bold",fontStyle:"italic",color:"//#region "}}>to report an incident please complete this form </Text>
                 <ScrollView>
-                  <Form  >
-
-
-                    <ListItem >
-                      <Text style={styles.form}>Firstname :</Text>
-                      <InputGroup >
-
-                        <Input inlineLabel label='FIRSTNAME' placeholder=' First name here' />
-                      </InputGroup>
-                    </ListItem>
-                    <ListItem>
-                      <Text style={styles.form}>lasttname :</Text>
-                      <InputGroup >
-
-                        <Input inlineLabel label='FIRSTNAME' placeholder=' Last name here' />
-                      </InputGroup>
-                    </ListItem>
-
-
-                    <ListItem>
-                      <InputGroup >
-                        <Text style={styles.form}>Number :</Text>
-                        <Input stackedLabel label='NUMERO' placeholder='Numéro de télephone' />
-                      </InputGroup>
-                    </ListItem>
-
-                    <ListItem>
-                      <InputGroup >
-                        <Text style={styles.form}>your position :</Text>
-
-                      </InputGroup>
-                    </ListItem>
-                    <ListItem>
+                  <Form> 
+                    <Text> </Text>
+                  <ListItem>
                       <InputGroup >
                         <Text style={styles.form}>Description</Text>
                         <Input stackedLabel label='description' placeholder='Describe your incident here' />
-
                       </InputGroup>
                     </ListItem>
-
                     <ListItem>
                       <InputGroup >
                         <Text style={styles.form}>your position :</Text>
-                        
                       </InputGroup>
                     </ListItem>
+                   
+
                     <ListItem>
                       <InputGroup >
                         <Text style={styles.form}> the incident's type :</Text>
@@ -171,6 +189,7 @@ onlygaleryvideo=()=> {
                       <InputGroup >
                         
                         <Text style={styles.form}>shoose photo</Text>
+
                         <IconButton onPress={this.handleChoosePhoto}
                       icon="image"
                       color={Colors.redA100}
@@ -184,24 +203,41 @@ onlygaleryvideo=()=> {
                           style={{ width: 150, height: 150 }}
                         />
                       )}
-                      <TouchableOpacity  style={styles.button}
-                        onPress={this.handleChooseMultiplePhoto}
-                      >
-                        <Text> Add more</Text>
-                      </TouchableOpacity>
+                      
+                      <SafeAreaView style={styles.safeArea}>
 
+<View style={styles.container}>
+    <StatusBar
+        barStyle="light-content"/>
+    <TouchableOpacity onPress={this.handleChooseMultiplePhoto.bind(this)}>
+        <Text>Add more</Text>
+    </TouchableOpacity>
+   
+</View>
+
+<ScrollView style={styles.imgContainer}>
+    {this.state.image ? this.renderAsset(this.state.image) : null}
+    {this.state.images ? this.state.images.map(i => <View style={styles.imgView}
+                                                          key={i.uri}>{this.renderAsset(i)}</View>) : null}
+    {
+       
+    }
+</ScrollView>
+
+
+</SafeAreaView>
                      
                     </ListItem>
 
                     <Text> OR </Text>
-                    <Text style={styles.form} >Directly Launching the Camera  </Text>
+                    <Text style={styles.form} >Directly Launch the Camera  </Text>
                     <IconButton onPress={this.launch}
                       icon="instagram"
                       color={Colors.redA100}
                       size={60}
                      
                     />  
-                        
+                       
                     
                   </Form>
                 </ScrollView>
@@ -213,38 +249,8 @@ onlygaleryvideo=()=> {
               <View style={{ flex: 1 }}>
 
                 <ScrollView>
-                  <Form  >
-                  
-
-                    <ListItem >
-                      <Text style={styles.form}>Firstname :</Text>
-                      <InputGroup >
-
-                        <Input inlineLabel label='FIRSTNAME' placeholder=' First name here' />
-                      </InputGroup>
-                    </ListItem>
-                    <ListItem>
-                      <Text style={styles.form}>lasttname :</Text>
-                      <InputGroup >
-
-                        <Input inlineLabel label='FIRSTNAME' placeholder=' Last name here' />
-                      </InputGroup>
-                    </ListItem>
-
-
-                    <ListItem>
-                      <InputGroup >
-                        <Text style={styles.form}>Number :</Text>
-                        <Input stackedLabel label='NUMERO' placeholder='Numéro de télephone' />
-                      </InputGroup>
-                    </ListItem>
-
-                    <ListItem>
-                      <InputGroup >
-                        <Text style={styles.form}>your position :</Text>
-
-                      </InputGroup>
-                    </ListItem>
+                  <Form >
+                   
                     <ListItem>
                       <InputGroup >
                         <Text style={styles.form}>Description</Text>
@@ -252,12 +258,13 @@ onlygaleryvideo=()=> {
 
                       </InputGroup>
                     </ListItem>
-
                     <ListItem>
                       <InputGroup >
                         <Text style={styles.form}>your position :</Text>
+
                       </InputGroup>
                     </ListItem>
+                    
                     <ListItem>
                       <InputGroup >
                         <Text style={styles.form}> the incident's type :</Text>
@@ -397,6 +404,9 @@ let styles = StyleSheet.create({
     flex:1,
     backgroundColor:'#FFFFFF',
     opacity:1
+  },
+  imgContainer:{
+   
   }
   
  
