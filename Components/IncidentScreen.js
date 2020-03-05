@@ -22,6 +22,11 @@ export default class IncidentScreen extends Component {
     photo: null,
   };
 
+  state2 = {
+    photo2: null,
+  };
+
+
   state = {
     isModalVisible: false
   };
@@ -46,6 +51,7 @@ export default class IncidentScreen extends Component {
   handleChoosePhoto=()=>{
     const options = {
       noData: true,
+      
     };
 
 ImagePicker.launchImageLibrary(options,response => {
@@ -61,9 +67,13 @@ ImagePicker.launchImageLibrary(options,response => {
   launch=()=>{
     const options = {
       noData: true,
+      
     };
     ImagePicker.launchCamera(options, (response) => {
       // Same code as in above section!
+      if (response.uri) {
+        this.setState({ photo2: response });
+       }
   console.log("response",response) ;
 });
   };
@@ -87,6 +97,9 @@ handleChooseMultiplePhoto()
     {
         ImagePicker3.openPicker({
             multiple: true,
+            width: 100,
+            height: 150,
+            cropping: true,
             waitAnimationEnd: false,
             includeExif: true,
             forceJpg: true,
@@ -128,7 +141,7 @@ onlygaleryvideo=()=> {
  
     render() {
       const { photo } = this.state;
-
+      const { photo2 } = this.state2;
       return (
 
         <ScrollView>
@@ -200,7 +213,7 @@ onlygaleryvideo=()=> {
                       {photo && (
                         <Image
                           source={{ uri: photo.uri }}
-                          style={{ width: 150, height: 150 }}
+                          style={{ width: '70%',height:'80%'}}
                         />
                       )}
                       
@@ -212,7 +225,7 @@ onlygaleryvideo=()=> {
     <TouchableOpacity onPress={this.handleChooseMultiplePhoto.bind(this)}>
         <Text>Add more</Text>
     </TouchableOpacity>
-   
+    
 </View>
 
 <ScrollView style={styles.imgContainer}>
@@ -235,9 +248,13 @@ onlygaleryvideo=()=> {
                       icon="instagram"
                       color={Colors.redA100}
                       size={60}
-                     
                     />  
-                       
+                        {photo2 && (
+                        <Image
+                          source={{ uri: photo2.uri }}
+                          style={{ width: '20%',height:'30%'}}
+                        />
+                      )}
                     
                   </Form>
                 </ScrollView>
@@ -407,7 +424,13 @@ let styles = StyleSheet.create({
   },
   imgContainer:{
    
-  }
+  },
+  imgView: {
+    width: '50%',
+    marginVertical: 10,
+   
+
+}
   
  
 });

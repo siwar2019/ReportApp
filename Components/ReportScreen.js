@@ -26,7 +26,8 @@ export default class ReportScreen extends Component {
         });
     }
 
-    pickMultiple() {
+    pickMultiple() 
+    {
         ImagePicker.openPicker({
             multiple: true,
             waitAnimationEnd: false,
@@ -69,9 +70,7 @@ export default class ReportScreen extends Component {
                     <TouchableOpacity onPress={this.pickMultiple.bind(this)}>
                         <Text>Select Images</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this.cleanupImages.bind(this)} >
-                        <Text >Clean History</Text>
-                    </TouchableOpacity>
+                   
                 </View>
 
                 <ScrollView style={styles.imgContainer}>
