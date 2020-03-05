@@ -168,7 +168,7 @@ onlygaleryvideo=()=> {
             <Modal style={styles.view} isVisible={this.state.isModalVisible}>
               
               <View style={{ flex: 1 }}>
-              <Text style={{fontSize:20,fontWeight:"bold",fontStyle:"italic",color:"//#region "}}>to report an incident please complete this form </Text>
+              <Text style={{fontSize:20,fontWeight:"bold",fontStyle:"italic"}}>to report an incident please complete this form </Text>
                 <ScrollView>
                   <Form> 
                     <Text> </Text>
