@@ -62,7 +62,7 @@ export default class InscriptionScreen extends React.Component {
       </Header>
             <View style={styles.signInContent}>
                 <Item  style={styles.lgInput} rounded>
-                    <Input style={styles.whiteColor}  placeholderTextColor="#fff" placeholder='Enter email..'/>
+                    <Input style={styles.whiteColor} name="email" placeholderTextColor="#fff" placeholder='Enter email..'/>
                 </Item>
                 <Item style={[styles.lgInput]} rounded>
                     <Input style={styles.whiteColor} secureTextEntry={this.state.password} placeholderTextColor="#fff" placeholder='Enter Password..'/>
