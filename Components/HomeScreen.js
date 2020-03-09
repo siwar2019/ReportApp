@@ -1,81 +1,52 @@
 import React from 'react';
 import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  Button,
-  View,
-  TouchableHighlight,
+    StyleSheet,
+    Text,
+    View,
+    ImageBackground, Image, TouchableOpacity,
 } from 'react-native';
-import { Container, Header, Content, Form, Item,  Label} from 'native-base';
-
-//import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input } from 'react-native-elements';
-
+import {Item, Icon, Input, Button} from 'native-base';
 
 export default class HomeScreen extends React.Component {
-  
-
+  constructor(props) {
+      super(props);
+      this.state = {
+          password:true,
+      }
+  }
+    onChangeShowPassword(){
+    this.setState({
+        password:!this.state.password,
+    });
+    }
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                require('../assets/logo.jpeg')
-              }
-              style={styles.welcomeImage}
-            />
+        <ImageBackground  source={require('../assets/bg-lg.jpg')} style={styles.container}>
+          <View style={styles.lgHeader}>
+              <Image source={require('../assets/logo-white.png')}></Image>
+              <Text style={[styles.lgTitle, styles.whiteColor]}> Report App </Text>
           </View>
+          <View style={styles.lgContent}>
+              <Item  style={styles.lgInput} rounded>
+                  <Input style={styles.whiteColor}  placeholderTextColor="#fff" placeholder='Enter username..'/>
+              </Item>
+              <Item style={[styles.lgInput]} rounded>
+                  <Input style={styles.whiteColor} secureTextEntry={this.state.password} placeholderTextColor="#fff" placeholder='Enter Password..'/>
+                  <Button   onPress={this.onChangeShowPassword.bind(this)} transparent rounded outline>
+                  <Icon style={styles.whiteColor} active name={this.state.password ? 'eye' : 'eye-off'} />
+                  </Button>
+              </Item>
+          </View>
+          <View style={styles.lgFooter}>
+              <TouchableOpacity underlayColor="white"  onPress={() => this.props.navigation.navigate("Navigation")} style={[styles.loginButton, styles.lgInput]} bordered  rounded light>
+                  <Text  style={styles.whiteColor}>Sign in</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate("InscriptionScreen")} >
 
-          <View style={styles.getStartedContainer}>
-            <Text style={styles.title}> if you wish to report an incident please proceed to authentication </Text>         
+              <Text style={styles.whiteColor}>No Account ? Create one</Text>
+              </TouchableOpacity>
           </View>
-          
-        <View>
-        
-            <Text style={styles.description}>sign in  </Text>           
-          
-        <Form>
-            <Item inlineLabel>
-              <Label>Username</Label>
-              <Input />
-            </Item>
-            <Item inlineLabel last>
-              <Label>Password</Label>
-              <Input />
-            </Item>
-          </Form>
-   
-        <Button color="#05a5d1" title="Sign in" onPress={() => this.props.navigation.navigate("Navigation")} />
-        
-        <TouchableHighlight onPress={() => this.props.navigation.navigate("InscriptionScreen")} underlayColor="white">
-          <View >
-            <Text style={styles.buttontext} >New here?</Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={() => this.props.navigation.navigate("Navigation")}underlayColor="white">
-          <View >
-            <Text style={styles.buttontext}>not now? </Text>
-          </View>
-        </TouchableHighlight> 
-        </View>
-              
-          <ScrollView
-            horizontal
-            pagingEnabled
-            style={{ marginBottom: 40 }}
-          >
-            <Image source={ '../assets/logo.jpeg'} style={styles.sliderImage} /> 
-            
-
-          </ScrollView>
-          
-          
-        </ScrollView>
-      </View>
+        </ImageBackground>
     );
   }
 }
@@ -83,56 +54,39 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f6f6f6',
   },
-  buttontext:{
+  lgHeader:{
     flex: 1,
-    flexDirection: 'column',
-    marginLeft: 170,
-    
-    justifyContent: 'center',
-    alignItems: 'center',
-    color:'#A9A9A9'
+      justifyContent: "flex-end",
+      alignItems:"center"
   },
-  description: {
-   
-    fontWeight: "bold",
-      fontSize: 20,
-      paddingBottom: 20,
-      paddingTop:10,
-      color:'#911F07',
-     
+  lgContent:{
+    flex: 1,
+      padding:30,
+      justifyContent: "space-evenly"
+  },
+  lgFooter: {
+    flex: 1,
+      alignItems:"center",
+      justifyContent: "space-between"
+  },
+    lgTitle: {
+fontWeight:"bold",
+        fontSize: 20
     },
-  title: {
-    fontSize: 15,
-    paddingBottom: 10,
-    color:'black',
-    
-  },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 30,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  sliderImage: {
-    height: 400,
-    width: 550
-  }
+    whiteColor:{
+        color:"#fff",
+    },
+    loginButton: {
+        borderWidth:1,
+        borderColor:'rgba(255,255,255,0.5)',
+        alignItems:'center',
+        justifyContent:'center',
+        width:200,
+        height:50,
+        borderRadius:50,
+    },
+    lgInput: {
+      backgroundColor:"rgba(255,255,255, 0.3)"
+    }
 });
