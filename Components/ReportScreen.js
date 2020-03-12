@@ -1,125 +1,104 @@
-import React, {Component} from 'react';
+import React,{useState} from 'react';
+import { Button ,TextInput} from 'react-native-paper';
 import {
-    View, Text, StyleSheet, ScrollView, Alert,
-   Image, TouchableOpacity, NativeModules, Dimensions, StatusBar, SafeAreaView
+  View,
+  Text,
+  StatusBar,
+  TouchableOpacity,
+  KeyboardAvoidingView
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
-var ImagePicker = NativeModules.ImageCropPicker;
-
-
-export default class ReportScreen extends Component {
-
-    constructor() {
-        super();
-        this.state = {
-            image: null,
-            images: null
-        };
+class  SignupScreen extends React.Component {
+    constructor(props){
+super(props);
+this.state={
+form:{
+    email:null,
+    password:null
+}
+}
     }
 
-    cleanupImages() {
-        ImagePicker.clean().then(() => {
-            // console.log('removed tmp images from tmp directory');
-            alert('Temporary images history cleared')
-        }).catch(e => {
-            alert(e);
+    setEmail(text){
+        this.setState({
+            form:{
+            email:text,
+            password: this.state.form.password
+        }
         });
     }
-
-    pickMultiple() 
-    {
-        ImagePicker.openPicker({
-            multiple: true,
-            waitAnimationEnd: false,
-            includeExif: true,
-            forceJpg: true,
-        }).then(images => {
-            this.setState({
-                image: null,
-                images: images.map(i => {
-                    console.log('received image', i);
-                    return {uri: i.path, width: i.width, height: i.height, mime: i.mime};
-                })
-            });
-        }).catch(e => alert(e));
+    setPassword(text){
+        this.setState({
+            form:{
+           email: this.state.form.email,
+            password:text
+            }
+        });
     }
-
-    scaledHeight(oldW, oldH, newW) {
-        return (oldH / oldW) * newW;
+    sendCred(){
+        console.warn('my form values', this.state.form)
     }
+  render(){
+  return (
+   <> 
+   <KeyboardAvoidingView behavior="position">
+     <StatusBar backgroundColor="blue" barStyle="light-content" />
+      <View
+      style={{
+        borderBottomColor:"blue",
+        borderBottomWidth:4,
+        borderRadius:10,
+        marginLeft:20,
+        marginRight:150,
+        marginTop:4
+      }}
+       />
+      <Text
+      style={{
+        fontSize:20,marginLeft:18,marginTop:20
+      }}
+      
+      >create new account</Text>
+      <TextInput
+        label='Email'
+        mode="outlined"
+        value={this.state.form.email}
+        style={{marginLeft:18,marginRight:18,marginTop:18}}
+        theme={{colors:{primary:"blue"}}}
+        onChangeText={(text)=>this.setEmail(text)}
+      />
+      <TextInput
+        label='password'
+        mode="outlined"
+        secureTextEntry={true}
+        value={this.state.form.password}
+        onChangeText={(text)=>{this.setPassword(text)}}
+        style={{marginLeft:18,marginRight:18,marginTop:18}}
+        theme={{colors:{primary:"blue"}}}
+     
+      />
+      <Button 
+        mode="contained"
+        style={{marginLeft:18,marginRight:18,marginTop:18}}
+       onPress={() => this.sendCred()}>
+        signup
+      </Button>
+      <TouchableOpacity>
+        <Text
+      style={{
+        fontSize:18,marginLeft:18,marginTop:20
+      }}
+      onPress={()=>props.navigation.replace("login")}
+      >already have a account ?</Text>
+      </TouchableOpacity>
+      
+      </KeyboardAvoidingView>
+   </>
+  )
+};
+};
 
-    renderImage(image) {
-        return <Image style={{width: 200, height: 200, resizeMode: 'contain'}} source={image}/>
-    }
-
-    renderAsset(image) {
-        if (image.mime && image.mime.toLowerCase().indexOf('video/') !== -1) {
-            return this.renderVideo(image);
-        }
-
-        return this.renderImage(image);
-    }
-
-    render() {
-        return (
-            <SafeAreaView style={styles.safeArea}>
-
-                <View style={styles.container}>
-                    <StatusBar
-                        barStyle="light-content"/>
-                    <TouchableOpacity onPress={this.pickMultiple.bind(this)}>
-                        <Text>Select Images</Text>
-                    </TouchableOpacity>
-                   
-                </View>
-
-                <ScrollView style={styles.imgContainer}>
-                    {this.state.image ? this.renderAsset(this.state.image) : null}
-                    {this.state.images ? this.state.images.map(i => <View style={styles.imgView}
-                                                                          key={i.uri}>{this.renderAsset(i)}</View>) : null}
-                    {
-                        this.state.images &&
-                        <TouchableOpacity onPress={this.cleanupImages.bind(this)}>
-                            <Text>Upload</Text>
-                        </TouchableOpacity>
-                    }
-                </ScrollView>
 
 
-            </SafeAreaView>
-        );
-    }
-}
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: "white",
-    },
-    imgContainer: {
-        marginVertical: 20
-    },
-    button: {
-        backgroundColor: 'blue',
-        marginBottom: 10,
-    },
-    text: {
-        color: 'white',
-        fontSize: 20,
-        textAlign: 'center'
-    },
-    title: {
-        fontWeight: 'bold',
-        fontSize: 22
-    },
-    safeArea: {
-        marginTop: 20
-    },
-    dateContainer: {
-        flexDirection: 'row',
-    },
-    imgView: {
-        width: '50%',
-        marginVertical: 10,
-
-    }
-});
+export default SignupScreen;
