@@ -20,6 +20,8 @@ form:{
 }
     }
 
+
+    
     setEmail(text){
         this.setState({
             form:{
@@ -36,13 +38,36 @@ form:{
             }
         });
     }
-    sendCred(){
-        console.warn('my form values', this.state.form)
-    }
+    async sendCred  (props){
+       console.warn('my form values', this.state.form)
+        
+          fetch("http://192.168.1.2:3003/inscription",{
+            method:"POST",
+            headers: {
+             'Content-Type': 'application/json'
+           },
+           body:JSON.stringify({
+             "email":this.state.form.email,
+             "password":this.state.form.password
+           })
+          })
+          .then(res=>res.json())
+/*          .then(async (data)=>{
+                 try {
+                   await AsyncStorage.setItem('token',data.token)
+                   props.navigation.replace("navigation")
+                 } catch (e) {
+                   console.log("error hai",e)
+                 }
+          })
+          */
+        }
+  
+      
   render(){
   return (
    <> 
-   <KeyboardAvoidingView behavior="position">
+   <KeyboardAvoidingView behavior="padding">
      <StatusBar backgroundColor="blue" barStyle="light-content" />
       <View
       style={{
@@ -60,8 +85,9 @@ form:{
       }}
       
       >create new account</Text>
+
       <TextInput
-        label='Email'
+        label='email'
         mode="outlined"
         value={this.state.form.email}
         style={{marginLeft:18,marginRight:18,marginTop:18}}

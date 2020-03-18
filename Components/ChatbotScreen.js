@@ -68,7 +68,7 @@ export default class ChatbotlScreen extends React.Component {
 }
    */
      test(){
-    fetch('http://192.168.2.43:3003/users')
+    fetch('http://192.168.1.2:3003/users')
     .then((res)=> res.json())
      .then((data)=>{
        console.warn(data);
