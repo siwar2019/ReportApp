@@ -39,6 +39,7 @@ export default class InscriptionScreen extends React.Component {
             form: {
                 email: null,
                 password: null,
+                firstname: null,
                 lastname: null,
                 firstname: null,
                 tel: null,
