@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import CryptoJS from "react-native-crypto-js";
 
 class  SignupScreen extends React.Component {
     constructor(props){
@@ -37,20 +38,23 @@ form:{
             password:text
             }
         });
-    }
+             }
     async sendCred  (props){
-       console.warn('my form values', this.state.form)
+     // let res2= CryptoJS.AES.encrypt(this.state.form, 'secret key 123');
+      console.warn('my form values', this.state.form)
         
-          fetch("http://192.168.1.2:3003/inscription",{
+          fetch("http://192.168.1.6:3004/inscription",{
             method:"POST",
             headers: {
              'Content-Type': 'application/json'
            },
            body:JSON.stringify({
-             "email":this.state.form.email,
-             "password":this.state.form.password
+            
+             "email": this.state.form.email,
+             "password":CryptoJS.AES.encrypt(this.state.form.email, 'secret key 123').toString() ,
            })
           })
+
           .then(res=>res.json())
 /*          .then(async (data)=>{
                  try {

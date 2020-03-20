@@ -26,7 +26,7 @@ import {
     Footer,
     Item
 } from 'native-base';
-
+import CryptoJS from "react-native-crypto-js";
 export default class InscriptionScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -132,17 +132,18 @@ export default class InscriptionScreen extends React.Component {
 async sendCred  (props){
     console.warn('my form values', this.state.form)
      
-       fetch("http://192.168.1.2:3003/user",{
+       fetch("http://192.168.1.6:3004/user",{
          method:"POST",
          headers: {
           'Content-Type': 'application/json'
         },
         body:JSON.stringify({
           "email":this.state.form.email,
-          "password":this.state.form.password,
+          "password":CryptoJS.AES.encrypt(this.state.form.password, 'secret key 123').toString() ,
           "address":this.state.form.address,
-          "lastname":this.state.form.lastname,
+          
           'firstname': this.state.form.firstname,
+          "lastname":this.state.form.lastname,
           'tel': this.state.form.tel,
 
 

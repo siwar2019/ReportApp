@@ -38,7 +38,9 @@ export default class HomeScreen extends React.Component {
               </Item>
           </View>
           <View style={styles.lgFooter}>
-              <TouchableOpacity underlayColor="white"  onPress={() => this.props.navigation.navigate("Navigation")} style={[styles.loginButton, styles.lgInput]} bordered  rounded light>
+            
+              <TouchableOpacity underlayColor="white"  onPress={() => this.props.navigation.navigate("Navigation")} style={[styles.loginButton, styles.lgInput]} bordered  rounded light> 
+                  
                   <Text  style={styles.whiteColor}>Sign in</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.props.navigation.navigate("InscriptionScreen")} >
