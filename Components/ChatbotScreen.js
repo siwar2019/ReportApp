@@ -1,121 +1,136 @@
 import React from 'react';
-
 import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  Button,
-  View,
-  TextInput
-  
+    StyleSheet,
+    Text,
+    View,
+    ImageBackground, Image, TouchableOpacity,
+    Keyboard,AsyncStorage,
 } from 'react-native';
+import {Item, Icon, Input, Button} from 'native-base';
 
-const sendCred= async (props)=>{
-  fetch("http://192.168.2.43:3003/afficherusers",{
-    method:"POST",
-    headers: {
-     'Content-Type': 'application/json'
-   },
-   body:JSON.stringify({
-     "email":email,
-     "password":password
-   })
-  })
-  .then(res=>res.json())
-  .then(async (data)=>{
-         try {
-           await AsyncStorage.setItem('token',data.token)
-           props.navigation.replace("home")
-         } catch (e) {
-           console.log("error hai",e)
-         }
-  })
-}
-import AsyncStorage from '@react-native-community/async-storage';
-export default class ChatbotlScreen extends React.Component {
-  constructor (props) {
-    super(props)
-  this.state = { 
-   
-    email: '',
-    password: '',
-  
+
+
+export default class ChatbotScreen extends React.Component {
+  constructor(props) {
+      super(props);
+      this.state={
+        email:'', 
+        password:''
+      }
+
   }
-  }
-  setEmail(value) {
+
+  onChangeShowPassword() {
     this.setState({
-      email:value
+      password: !this.state.password,
     });
   }
-  setPassword(value) {
-    this.setState({
-      password:value
-    });
-  }
-  /*
-  test(){
-    fetch('http://192.168.2.43:3003/users')
-  .then((response) => {
-    return response.json();
-  })
-  .catch((data) => {
-    console.log('Success:',data);
-  })
-  .catch((error)=> {
-    console.warn('my error', error);
-  })
-}
-   */
-     test(){
-    fetch('http://192.168.1.2:3003/users')
-    .then((res)=> res.json())
-     .then((data)=>{
-       console.warn(data);
-     })
-    
-    .catch((error)=> {
-      console.warn('my error', error);
+  login = () => {
+
+    fetch("http://192.168.1.6:3004/auth", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "email": this.state.email,
+        "password": this.state.password,
+
+      })
     })
+      .then(res => res.json())
+      .then((res) => {
+        if (res.success === true) {
+          var email = res.message;
+          AsyncStorage.setItem('email', email);
+          this.props.navigator.push({
+            id: 'HomeScreen'
+          });
+        } else {
+          alert(res.message);
+        }
+      })
+
+      .done();
   }
-  
+
+   
+
   render() {
-    
     return (
-      <View>
-      <View >
-        <Text>HI CEST chatbot </Text> 
-        <Button title="OK!" onPress={this.test} />
-      </View>
-      <View>
-       <TextInput
-       label='email'
-       mode="outlined"
-       value={this.Login}
-       style={{marginLeft:18,marginRight:18,marginTop:18}}
-       theme={{colors:{primary:"blue"}}}
-       onChangeText={(text)=>setEmail(text)}
-     />
-     </View>
-     <View>
-     <TextInput
-       label='password'
-       mode="outlined"
-       secureTextEntry={true}
-       value={this.password}
-       onChangeText={(text)=>{setPassword(text)}}
-       style={{marginLeft:18,marginRight:18,marginTop:18}}
-       theme={{colors:{primary:"blue"}}}
-    
-     />
-     </View>
-<View>
-<Button title="SINSCRIRE!" onPress={() => sendCred(props)} />
-     </View>
-     </View>
+        <ImageBackground  source={require('../assets/bg-lg.jpg')} style={styles.container}>
+          <View style={styles.lgHeader}>
+              <Image source={require('../assets/logo-white.png')}></Image>
+              <Text style={[styles.lgTitle, styles.whiteColor]}> Report App </Text>
+          </View>
+          <View style={styles.lgContent}>
+              <Item  style={styles.lgInput} rounded>
+                  <Input style={styles.whiteColor}  placeholderTextColor="#fff" placeholder='Enter username..'
+                                    onChangeText={(email)=>this.setState({email})}
+                                    value={this.state.email}
+                  />
+                 
+              </Item>
+              <Item style={[styles.lgInput]} rounded>
+                  <Input style={styles.whiteColor}  placeholderTextColor="#fff" placeholder='Enter Password..'
+                                    onChangeText={(password)=>this.setState({password})}
+                                    value={this.state.password}/>
+                  
+                
+              </Item>
+          </View>
+          <View style={styles.lgFooter}>
+            
+              <TouchableOpacity underlayColor="white"  onPress={() => this.login()} style={[styles.loginButton, styles.lgInput]} bordered  rounded light> 
+             
+                  <Text  style={styles.whiteColor}>Sign in</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate("InscriptionScreen")} >
+
+              <Text style={styles.whiteColor}>No Account ? Create one</Text>
+              </TouchableOpacity>
+          </View>
+        </ImageBackground>
     );
   }
 }
 
-
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  lgHeader:{
+    flex: 1,
+      justifyContent: "flex-end",
+      alignItems:"center"
+  },
+  lgContent:{
+    flex: 1,
+      padding:30,
+      justifyContent: "space-evenly"
+  },
+  lgFooter: {
+    flex: 1,
+      alignItems:"center",
+      justifyContent: "space-between"
+  },
+    lgTitle: {
+fontWeight:"bold",
+        fontSize: 20
+    },
+    whiteColor:{
+        color:"#fff",
+    },
+    loginButton: {
+        borderWidth:1,
+        borderColor:'rgba(255,255,255,0.5)',
+        alignItems:'center',
+        justifyContent:'center',
+        width:200,
+        height:50,
+        borderRadius:50,
+    },
+    lgInput: {
+      backgroundColor:"rgba(255,255,255, 0.3)"
+    }
+});
