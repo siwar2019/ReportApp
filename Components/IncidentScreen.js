@@ -6,7 +6,6 @@ import { Form } from "native-base";
 import {ListItem, List,Icon,InputGroup, Input} from 'native-base' ;
 import ImagePicker from 'react-native-image-picker';
 //import ImagePicker2 from 'react-native-image-crop-picker';
-import { IconButton, Colors,ActivityIndicator } from 'react-native-paper';
 var ImagePicker3 = NativeModules.ImageCropPicker;
 export default class IncidentScreen extends Component {
  
@@ -203,12 +202,7 @@ onlygaleryvideo=()=> {
                         
                         <Text style={styles.form}>shoose photo</Text>
 
-                        <IconButton onPress={this.handleChoosePhoto}
-                      icon="image"
-                      color={Colors.redA100}
-                      size={60}
-                     
-                    />  
+
                       </InputGroup>
                       {photo && (
                         <Image
@@ -244,11 +238,7 @@ onlygaleryvideo=()=> {
 
                     <Text> OR </Text>
                     <Text style={styles.form} >Directly Launch the Camera  </Text>
-                    <IconButton onPress={this.launch}
-                      icon="instagram"
-                      color={Colors.redA100}
-                      size={60}
-                    />  
+
                         {photo2 && (
                         <Image
                           source={{ uri: photo2.uri }}

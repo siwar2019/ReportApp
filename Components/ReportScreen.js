@@ -1,5 +1,4 @@
 import React,{useState} from 'react';
-import { Button ,TextInput} from 'react-native-paper';
 import {
   View,
   Text,
@@ -7,8 +6,8 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import CryptoJS from "react-native-crypto-js";
+import {Button} from 'native-base';
 
 class  SignupScreen extends React.Component {
     constructor(props){
@@ -90,24 +89,6 @@ form:{
       
       >create new account</Text>
 
-      <TextInput
-        label='email'
-        mode="outlined"
-        value={this.state.form.email}
-        style={{marginLeft:18,marginRight:18,marginTop:18}}
-        theme={{colors:{primary:"blue"}}}
-        onChangeText={(text)=>this.setEmail(text)}
-      />
-      <TextInput
-        label='password'
-        mode="outlined"
-        secureTextEntry={true}
-        value={this.state.form.password}
-        onChangeText={(text)=>{this.setPassword(text)}}
-        style={{marginLeft:18,marginRight:18,marginTop:18}}
-        theme={{colors:{primary:"blue"}}}
-     
-      />
       <Button 
         mode="contained"
         style={{marginLeft:18,marginRight:18,marginTop:18}}

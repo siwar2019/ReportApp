@@ -10,12 +10,8 @@ import {
   ImageBackground,
   Linking,
 } from 'react-native';
-import { Container, Header, Content,Title,Button} from 'native-base';
-import Icon from 'react-native-ionicons'
+import { Button} from 'native-base';
 import call from 'react-native-phone-call';
-//import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input } from 'react-native-elements';
-import { Assets } from '@react-navigation/stack';
 
 
 
