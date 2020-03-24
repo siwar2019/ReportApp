@@ -49,7 +49,7 @@ _loadInitialState=async()=> {
         alert(res.message)
         if (res.success === true) {
          
-         AsyncStorage.setItem('user', response.user);
+         AsyncStorage.setItem('user', res.user);
           this.props.navigation.navigate('Navigation');
         } else {
           alert(res.message);
