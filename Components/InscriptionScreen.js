@@ -39,8 +39,8 @@ export default class InscriptionScreen extends React.Component {
             form: {
                 email: null,
                 password: null,
-                lastname: null,
                 firstname: null,
+                lastname: null,
                 tel: null,
                 address: null,
             }
@@ -132,7 +132,7 @@ export default class InscriptionScreen extends React.Component {
 async sendCred  (props){
     console.warn('my form values', this.state.form)
      
-       fetch("http://192.168.1.6:3004/user",{
+       fetch("http://192.168.1.5:3004/user",{
          method:"POST",
          headers: {
           'Content-Type': 'application/json'
