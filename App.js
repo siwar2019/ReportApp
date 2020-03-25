@@ -42,7 +42,7 @@ function StackScreenChat() {
     </Stack.Navigator>
   );
 }
-function StackScreenAppel() {
+/*function StackScreenAppel() {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -56,7 +56,7 @@ function StackScreenAppel() {
       />
     </Stack.Navigator>
   );
-}
+}*/
 /*
 function Screen({ navigation }) {
   return (
@@ -82,7 +82,7 @@ function Navigation({ navigation }) {
             <Tab.Screen name="Acceuil" component={AcceuilScreen}  //thezna el page acceuil screen
           
               />
-            <Tab.Screen name="Call urgency " component={StackScreenAppel}  />
+            <Tab.Screen name="Call urgency " component={AppelScreen}  />
             <Tab.Screen name="Incident" component={StackScreenIncident} />
             <Tab.Screen name="Report" component={ReportScreen}   />
             <Tab.Screen name="Chatbot" component={StackScreenChat} />

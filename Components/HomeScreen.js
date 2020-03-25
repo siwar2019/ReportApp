@@ -32,6 +32,7 @@ _loadInitialState=async()=> {
     });
   }
   login = () => {
+      this.props.navigation.navigate('Navigation');
     fetch("http://192.168.1.5:3004/authentification", {
       method: "POST",
       headers: {
