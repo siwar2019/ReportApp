@@ -1,115 +1,106 @@
-import React,{useState} from 'react';
+import React from 'react';
 import {
-  View,
+  Image,
+  ScrollView,
+  StyleSheet,
   Text,
-  StatusBar,
-  TouchableOpacity,
-  KeyboardAvoidingView
+  Button,
+  View,
 } from 'react-native';
-import CryptoJS from "react-native-crypto-js";
-import {Button} from 'native-base';
+import {LivePlayer} from "react-native-live-stream";
 
-class  SignupScreen extends React.Component {
-    constructor(props){
-super(props);
-this.state={
-form:{
-    email:null,
-    password:null
-}
-}
-    }
-
-
-    
-    setEmail(text){
-        this.setState({
-            form:{
-            email:text,
-            password: this.state.form.password
-        }
-        });
-    }
-    setPassword(text){
-        this.setState({
-            form:{
-           email: this.state.form.email,
-            password:text
-            }
-        });
-             }
-    async sendCred  (props){
-     // let res2= CryptoJS.AES.encrypt(this.state.form, 'secret key 123');
-      console.warn('my form values', this.state.form)
-        
-          fetch("http://192.168.1.6:3004/inscription",{
-            method:"POST",
-            headers: {
-             'Content-Type': 'application/json'
-           },
-           body:JSON.stringify({
-            
-             "email": this.state.form.email,
-             "password":CryptoJS.AES.encrypt(this.state.form.email, 'secret key 123').toString() ,
-           })
-          })
-
-          .then(res=>res.json())
-/*          .then(async (data)=>{
-                 try {
-                   await AsyncStorage.setItem('token',data.token)
-                   props.navigation.replace("navigation")
-                 } catch (e) {
-                   console.log("error hai",e)
-                 }
-          })
-          */
-        }
+import {  NodePlayerView } from 'react-native-nodemediaclient';
+import {  NodeCameraView } from 'react-native-nodemediaclient';
+import Video from 'react-native-video';
+export default class ReportScreen extends React.Component {
   
+  constructor(props) {
+    super(props);
+    this.state = {
+      publishBtnTitle: '',
+
+    }
+  }
+  render() {
+    return (
+    <View>
       
-  render(){
-  return (
-   <> 
-   <KeyboardAvoidingView behavior="padding">
-     <StatusBar backgroundColor="blue" barStyle="light-content" />
-      <View
-      style={{
-        borderBottomColor:"blue",
-        borderBottomWidth:4,
-        borderRadius:10,
-        marginLeft:20,
-        marginRight:150,
-        marginTop:4
-      }}
-       />
-      <Text
-      style={{
-        fontSize:20,marginLeft:18,marginTop:20
-      }}
-      
-      >create new account</Text>
 
-      <Button 
-        mode="contained"
-        style={{marginLeft:18,marginRight:18,marginTop:18}}
-       onPress={() => this.sendCred()}>
-        signup
-      </Button>
-      <TouchableOpacity>
-        <Text
-      style={{
-        fontSize:18,marginLeft:18,marginTop:20
-      }}
-      onPress={()=>props.navigation.replace("login")}
-      >already have a account ?</Text>
-      </TouchableOpacity>
-      
-      </KeyboardAvoidingView>
-   </>
-  )
-};
-};
+
+      <NodePlayerView 
+  style={{ height: 200 }}
+  ref={(vp) => { this.vp = vp }}
+  inputUrl={"rtmp://live.mux.com/app/02a236ab-f8dc-e0ac-7e78-a778e7401299"}
+  scaleMode={"ScaleAspectFit"}
+  bufferTime={300}
+  maxBufferTime={1000}
+  autoplay={true}
+/>
+
+<NodeCameraView 
+  style={styles.nodeCameraView}
+  ref={(vb) => { this.vb = vb }}
+  outputUrl = {"rtmp://live.mux.com/app/02a236ab-f8dc-e0ac-7e78-a778e7401299"}
+  camera={{ cameraId: 1, cameraFrontMirror: true }}
+  audio={{ bitrate: 32000, profile: 1, samplerate: 44100 }}
+  video={{ preset: 12, bitrate: 400000, profile: 1, fps: 15, videoFrontMirror: false }}
+  autopreview={true}
+/>
 
 
 
-export default SignupScreen;
+  
+<View>
+<Button
+  onPress={() => {
+    if (this.state.isPublish) {
+      this.setState({ publishBtnTitle: 'Start Publish', isPublish: false });
+      this.vb.stop();
+    } else {
+      this.setState({ publishBtnTitle: 'Stop Publish', isPublish: true });
+      this.vb.start();
+    }
+  }}
+  title={this.state.publishBtnTitle}
+  color="#841584"
+/>
+</View>
+
+<View>
+ 
+<Video  style={styles.backgroundVideo}
+       source={{uri: "https://stream.mux.com/02jkkxfiE2CYgR8WMpBNMBIIckJpymOmxcvknXZ02Jpcs.m3u8"}}   
+       ref={(ref) => {
+         this.player = ref
+       }}  // Store reference
+       onBuffer={this.onBuffer} // Callback when remote video is buffering
+       onError={this.videoError} // Callback when video cannot be loaded
+      />
+</View>
+ <Text  style={styles.bold}>HJHH</Text>
+    </View>
+    );
+  }
+}
+
+
+const styles = StyleSheet.create({
+  nodeCameraView: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0
+  },
+  backgroundVideo: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },
+  bold : {
+    color:'red'
+  }
+
+});

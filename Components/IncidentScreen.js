@@ -5,7 +5,7 @@ import { TouchableHighlight,Image,StyleSheet ,ScrollView,Picker,TouchableOpacity
 import { Form } from "native-base";
 import {ListItem, List,Icon,InputGroup, Input} from 'native-base' ;
 import ImagePicker from 'react-native-image-picker';
-//import ImagePicker2 from 'react-native-image-crop-picker';
+import ImagePicker2 from 'react-native-image-crop-picker';
 var ImagePicker3 = NativeModules.ImageCropPicker;
 export default class IncidentScreen extends Component {
  
