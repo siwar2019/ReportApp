@@ -32,8 +32,7 @@ _loadInitialState=async()=> {
     });
   }
   login = () => {
-      this.props.navigation.navigate('Navigation');
-    fetch("http://192.168.1.5:3004/authentification", {
+    fetch("http://192.168.1.6:3004/authentification", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -46,13 +45,13 @@ _loadInitialState=async()=> {
     })
       .then(response => response.json())
       .then((res) => {
-        console.warn(res.message)
-        if (res.success === true) {
-
-         AsyncStorage.setItem('user', res.user);
-          this.props.navigation.navigate('Navigation');
+        //console.warn(res.message)
+        if (res.succes === true) {
+            console.warn("here")
+     AsyncStorage.setItem('user', res.user);
+       this.props.navigation.navigate('Navigation');
         } else {
-            this.props.navigation.navigate('Navigation');
+          //  this.props.navigation.navigate('Navigation');
           alert(res.message);
         }
       })   .catch((error) => {

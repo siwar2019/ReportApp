@@ -25,6 +25,7 @@
     "react-native-img-button": "^1.0.1",
     "react-native-ionicons": "^4.6.4",
     "react-native-maps": "0.27.1",
+    "react-native-live-stream": "^1.0.1",
     "react-native-modal": "^11.5.4",
     "react-native-phone-call": "^1.0.9",
     "react-native-picker-select": "^6.5.0",
