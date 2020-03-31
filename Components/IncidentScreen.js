@@ -4,6 +4,7 @@ import Modal  from "react-native-modal";
 import { TouchableHighlight,Image,StyleSheet ,ScrollView,Picker,TouchableOpacity,NativeModules, StatusBar, SafeAreaView} from 'react-native';
 import {Container, Form, Right,ListItem, Button,Card,InputGroup, Input, CardItem,Body,Text} from 'native-base' ;
 import ImagePicker from 'react-native-image-picker';
+import ImagePicker2 from 'react-native-image-crop-picker';
 import Nav from "./Nav";
 //import ImagePicker2 from 'react-native-image-crop-picker';
 var ImagePicker3 = NativeModules.ImageCropPicker;
