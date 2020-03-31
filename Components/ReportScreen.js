@@ -11,7 +11,6 @@ import {LivePlayer} from "react-native-live-stream";
 
 import {  NodePlayerView } from 'react-native-nodemediaclient';
 import {  NodeCameraView } from 'react-native-nodemediaclient';
-import Video from 'react-native-video';
 export default class ReportScreen extends React.Component {
   
   constructor(props) {
