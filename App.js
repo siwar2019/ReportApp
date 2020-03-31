@@ -3,33 +3,18 @@ import { Text, StatusBar, Button, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import SafeAreaView from 'react-native-safe-area-view';
 import ReportScreen from './Components/ReportScreen' ;
 import IncidentScreen from './Components/IncidentScreen' ;
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import HomeScreen from './Components/HomeScreen';
-import StreamingScreen from './Components/StreamingScreen';
 import AcceuilScreen from './Components/AcceuilScreen';
 import AppelScreen from './Components/AppelScreen';
 import ChatbotScreen from './Components/ChatbotScreen';
 import InscriptionScreen from './Components/InscriptionScreen';
-import Icon from 'react-native-ionicons'
-
-function StackScreenIncident() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Report an incident"
-        component={IncidentScreen}
-        options={{ title: 'Report an incident' }}
-      />
-      
-    </Stack.Navigator>
-  );
-}
-
+import IncidentForm from "./Components/IncidentForm";
+import { Root } from "native-base";
 
 function StackScreenChat() {
   return (
@@ -83,7 +68,7 @@ function Navigation({ navigation }) {
           
               />
             <Tab.Screen name="Call urgency " component={AppelScreen}  />
-            <Tab.Screen name="Incident" component={StackScreenIncident} />
+            <Tab.Screen name="Incident" component={IncidentScreen} />
             <Tab.Screen name="Report" component={ReportScreen}   />
             <Tab.Screen name="Chatbot" component={StackScreenChat} />
 
@@ -101,7 +86,7 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     
-    
+    <Root>
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator headerMode="none">
@@ -109,11 +94,11 @@ export default function App() {
           />
           <Stack.Screen name="Navigation" component={Navigation} />
           <Stack.Screen name="InscriptionScreen" component={InscriptionScreen} />
-         
+            <Stack.Screen name="IncidentFormScreen" component={IncidentForm} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
-   
+    </Root>
   );
 
 
