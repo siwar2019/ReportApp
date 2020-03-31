@@ -32,7 +32,7 @@ _loadInitialState=async()=> {
     });
   }
   login = () => {
-    fetch("http://192.168.1.6:3004/authentification", {
+    fetch("http://192.168.1.6:3001/authentification", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -63,7 +63,7 @@ _loadInitialState=async()=> {
 
   render() {
     return (
-        <ImageBackground  source={require('../assets/bg-lg.jpg')} style={styles.container}>
+        <ImageBackground  source={require('../assets/back.jpeg')} style={styles.container}>
           <View style={styles.lgHeader}>
               <Image source={require('../assets/logo-white.png')}></Image>
               <Text style={[styles.lgTitle, styles.whiteColor]}> Report App </Text>
@@ -89,6 +89,14 @@ _loadInitialState=async()=> {
               <TouchableOpacity underlayColor="white"  onPress={() => this.login()} style={[styles.loginButton, styles.lgInput]} bordered  rounded light> 
              
                   <Text  style={styles.whiteColor}>Sign in</Text>
+
+                  
+              </TouchableOpacity>
+              <TouchableOpacity underlayColor="white"  onPress={() =>  this.props.navigation.navigate('Navigation')} style={[styles.loginButton, styles.lgInput]} bordered  rounded light> 
+             
+                  <Text  style={styles.whiteColor}>Sign in</Text>
+
+                  
               </TouchableOpacity>
               <TouchableOpacity onPress={() => this.props.navigation.navigate("InscriptionScreen")} >
 
@@ -103,6 +111,7 @@ _loadInitialState=async()=> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingBottom:30,
   },
   lgHeader:{
     flex: 1,

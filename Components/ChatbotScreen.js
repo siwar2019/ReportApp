@@ -1,136 +1,60 @@
 import React from 'react';
 import {
-    StyleSheet,
-    Text,
-    View,
-    ImageBackground, Image, TouchableOpacity,
-    Keyboard,AsyncStorage,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  Button,
+  View,
 } from 'react-native';
-import {Item, Icon, Input, Button} from 'native-base';
-
-
-
-export default class ChatbotScreen extends React.Component {
-  constructor(props) {
-      super(props);
-      this.state={
-        email:'', 
-        password:''
-      }
-
-  }
-
-  onChangeShowPassword() {
-    this.setState({
-      password: !this.state.password,
-    });
-  }
-  login = () => {
-
-    fetch("http://192.168.1.6:3004/auth", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        "email": this.state.email,
-        "password": this.state.password,
-
-      })
-    })
-      .then(res => res.json())
-      .then((res) => {
-        if (res.success === true) {
-          var email = res.message;
-          AsyncStorage.setItem('email', email);
-          this.props.navigator.push({
-            id: 'HomeScreen'
-          });
-        } else {
-          alert(res.message);
-        }
-      })
-
-      .done();
-  }
-
-   
-
-  render() {
-    return (
-        <ImageBackground  source={require('../assets/bg-lg.jpg')} style={styles.container}>
-          <View style={styles.lgHeader}>
-              <Image source={require('../assets/logo-white.png')}></Image>
-              <Text style={[styles.lgTitle, styles.whiteColor]}> Report App </Text>
-          </View>
-          <View style={styles.lgContent}>
-              <Item  style={styles.lgInput} rounded>
-                  <Input style={styles.whiteColor}  placeholderTextColor="#fff" placeholder='Enter username..'
-                                    onChangeText={(email)=>this.setState({email})}
-                                    value={this.state.email}
-                  />
-                 
-              </Item>
-              <Item style={[styles.lgInput]} rounded>
-                  <Input style={styles.whiteColor}  placeholderTextColor="#fff" placeholder='Enter Password..'
-                                    onChangeText={(password)=>this.setState({password})}
-                                    value={this.state.password}/>
-                  
-                
-              </Item>
-          </View>
-          <View style={styles.lgFooter}>
-            
-              <TouchableOpacity underlayColor="white"  onPress={() => this.login()} style={[styles.loginButton, styles.lgInput]} bordered  rounded light> 
-             
-                  <Text  style={styles.whiteColor}>Sign in</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate("InscriptionScreen")} >
-
-              <Text style={styles.whiteColor}>No Account ? Create one</Text>
-              </TouchableOpacity>
-          </View>
-        </ImageBackground>
-    );
-  }
+//import { RNCamera, FaceDetector } from 'react-native-camera';
+export default class ChatBotScreen extends React.Component {
+  async startRecording() {
+    this.setState({ recording: true });
+    // default to mp4 for android as codec is not set
+    const { uri, codec = "mp4" } = await this.camera.recordAsync();
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  lgHeader:{
-    flex: 1,
-      justifyContent: "flex-end",
-      alignItems:"center"
-  },
-  lgContent:{
-    flex: 1,
-      padding:30,
-      justifyContent: "space-evenly"
-  },
-  lgFooter: {
-    flex: 1,
-      alignItems:"center",
-      justifyContent: "space-between"
-  },
-    lgTitle: {
-fontWeight:"bold",
-        fontSize: 20
+stopRecording() {
+    this.camera.stopRecording();
+}
+  render() {
+    return (
+      <View style={styles.container}>
+        <RNCamera
+          ref={ref => {
+            this.camera = ref;
+          }}
+          style={styles.preview}
+          type={RNCamera.Constants.Type.back}
+          flashMode={RNCamera.Constants.FlashMode.on}
+          androidCameraPermissionOptions ={"Permission to use camera"}
+          androidCameraPermissionOptions ={
+            "We need your permission to use your camera phone"
+          }
+        />
+        <View
+          style={{ flex: 0, flexDirection: "row", justifyContent: "center" }}
+        >
+         
+        </View>
+      </View>
+    );
+  }}
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: "flex-start"
     },
-    whiteColor:{
-        color:"#fff",
+    headline: {
+      alignSelf: "center",
+      fontSize: 18,
+      marginTop: 10,
+      marginBottom: 30
     },
-    loginButton: {
-        borderWidth:1,
-        borderColor:'rgba(255,255,255,0.5)',
-        alignItems:'center',
-        justifyContent:'center',
-        width:200,
-        height:50,
-        borderRadius:50,
-    },
-    lgInput: {
-      backgroundColor:"rgba(255,255,255, 0.3)"
+    videoTile: {
+      alignSelf: "center",
+      fontSize: 16,
+      marginTop: 15
     }
-});
+  });
