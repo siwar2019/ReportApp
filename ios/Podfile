@@ -39,6 +39,8 @@ target 'projet3' do
 
 
 
+  pod 'react-native-dialogflow', :path => '../node_modules/react-native-dialogflow'
+
   target 'projet3Tests' do
     inherit! :search_paths
     # Pods for testing

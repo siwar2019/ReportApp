@@ -12,9 +12,12 @@ import HomeScreen from './Components/HomeScreen';
 import AcceuilScreen from './Components/AcceuilScreen';
 import AppelScreen from './Components/AppelScreen';
 import ChatbotScreen from './Components/ChatbotScreen';
+import Chatbot2 from './Components/chatbot2';
+
 import InscriptionScreen from './Components/InscriptionScreen';
 import IncidentForm from "./Components/IncidentForm";
 import { Root } from "native-base";
+import chatbot2 from './Components/chatbot2';
 
 function StackScreenChat() {
   return (
@@ -69,7 +72,7 @@ function Navigation({ navigation }) {
               />
             <Tab.Screen name="Call urgency " component={AppelScreen}  />
             <Tab.Screen name="Incident" component={IncidentScreen} />
-            <Tab.Screen name="Report" component={ReportScreen}   />
+            <Tab.Screen name="chatbot2" component={chatbot2}   />
             <Tab.Screen name="Chatbot" component={StackScreenChat} />
 
           </Tab.Navigator>

@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import {
   View,
   Text,
@@ -40,4 +40,5 @@ export default class App extends React.Component {
       </View>
     );
   }
-}v
+}
+*/
