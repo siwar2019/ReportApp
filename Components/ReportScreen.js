@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 
-export default class ReportScreen extends React.Component {
+export default class StreamingScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
