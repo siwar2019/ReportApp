@@ -1,136 +1,155 @@
 import React from 'react';
 import {
-    StyleSheet,
-    Text,
-    View,
-    ImageBackground, Image, TouchableOpacity,
-    Keyboard,AsyncStorage,
+  View,
+  Text,
+  StyleSheet,
+  Image
 } from 'react-native';
-import {Item, Icon, Input, Button} from 'native-base';
+import ChatBot from 'react-native-chatbot';
 
 
-
-export default class ChatbotScreen extends React.Component {
-  constructor(props) {
-      super(props);
-      this.state={
-        email:'', 
-        password:''
-      }
-
+const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    // alignItems: 'center',
+    // justifyContent: 'center'
+  },
+  text: {
+    fontSize: 25
   }
+});
 
-  onChangeShowPassword() {
-    this.setState({
-      password: !this.state.password,
-    });
-  }
-  login = () => {
 
-    fetch("http://192.168.1.6:3004/auth", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
+const steps = [
+  {
+    id: 'welcome message',
+    message: 'Hello how are you?',
+    trigger: "Ask Name"
+  },
+  {
+    id: "Ask Name",
+    message: "Please type your name?",
+    trigger: "Waiting user input for name"
+  },
+  
+   {
+     id: "Waiting user input for name",
+     user: true,
+     trigger: "Asking question"
+   },
+  {
+    id: "Asking question",
+    message: "Hi {previousValue}, Glad to know you !!",
+    trigger: "other"
+  },
+  {
+    id: "other",
+    message: "how can i help you?",
+    trigger: "userinput2"
+  },
+  {
+    id: "userinput2",
+    user: true,
+    trigger: "dont panick"
+  },
+  {
+    id: "dont panick",
+    message: "Please dont panick! ,I will guide you :) ",
+    trigger: "question2"
+  },
+  {
+    id: "question2",
+    message: "what is the kind of your incident?",
+    trigger: "incident type"
+  },
+
+  {
+    id: 'incident type',
+    options: [
+      {
+        value: 'Road accident', label: 'road accident', trigger: () => {
+          console.log("Clicked on Road accident");
+          return "accident";
+        },
       },
-      body: JSON.stringify({
-        "email": this.state.email,
-        "password": this.state.password,
-
-      })
-    })
-      .then(res => res.json())
-      .then((res) => {
-        if (res.success === true) {
-          var email = res.message;
-          AsyncStorage.setItem('email', email);
-          this.props.navigator.push({
-            id: 'HomeScreen'
-          });
-        } else {
-          alert(res.message);
-        }
-      })
-
-      .done();
-  }
-
+      { value: 'Sinking', label: 'Sinking', trigger: 'Sinking' },
+      { value: 'Fire', label: 'Fire', trigger: 'Fire' },
+      { value: 'Flood', label: 'Flood', trigger: 'Flood' }
+    ]
+  },
+  
+  {
+    id: "Done",
+    message: 'May God bless you !!',
    
+    end: true
+  },
+ 
+  
+  {
+    id: 'accident',
+    message: 'You choose Road accident!!',
+    trigger: ({ value, steps }) => {
+      if(steps['8'] === undefined) {
+        return '8';
+      } else {
+        return '9';
+      }
+    }
+  },
+ 
+  {
+    id: '8',
+    message: 'First you should call police immediatelly on  197',
+    trigger: 'step2'
+  },
+ 
+  {
+    id: "step2",
+    message: 'then call  198 Medical ambulances at 71 780 000 or 71 781 000',
+    trigger: "Done"
+  },
+  {
+    id: 'Sinking',
+    message: 'you should contact the nearest savior swimmer in the sea you are swimming in',
+    trigger: '7.5'
+  },
+  {
+    id: '7.5',
+    message: 'please harry up',
+    trigger: "Done"
+  },
+  {
+    id: 'Fire',
+    message: 'you should call civil protection at 198',
+    trigger: "Fire2"
+  },
+  {
+    id: 'Fire2',
+    message: 'you should call civil protection at 198',
+    trigger: "Done"
+  },
+  {
+  id: 'Flood',
+  message: 'First you should call civil protection at 198 they will send you pompier',
+  trigger: 'end'
+},
+  {
+    id: 'end',
+    component: <Image source={require('../assets/victor/bless2.jpg')} style={{ width: 300, height: 180 }} />,
+    end:true
+  },
+  
+  
+]
 
+export default class App extends React.Component {
   render() {
     return (
-        <ImageBackground  source={require('../assets/bg-lg.jpg')} style={styles.container}>
-          <View style={styles.lgHeader}>
-              <Image source={require('../assets/logo-white.png')}></Image>
-              <Text style={[styles.lgTitle, styles.whiteColor]}> Report App </Text>
-          </View>
-          <View style={styles.lgContent}>
-              <Item  style={styles.lgInput} rounded>
-                  <Input style={styles.whiteColor}  placeholderTextColor="#fff" placeholder='Enter username..'
-                                    onChangeText={(email)=>this.setState({email})}
-                                    value={this.state.email}
-                  />
-                 
-              </Item>
-              <Item style={[styles.lgInput]} rounded>
-                  <Input style={styles.whiteColor}  placeholderTextColor="#fff" placeholder='Enter Password..'
-                                    onChangeText={(password)=>this.setState({password})}
-                                    value={this.state.password}/>
-                  
-                
-              </Item>
-          </View>
-          <View style={styles.lgFooter}>
-            
-              <TouchableOpacity underlayColor="white"  onPress={() => this.login()} style={[styles.loginButton, styles.lgInput]} bordered  rounded light> 
-             
-                  <Text  style={styles.whiteColor}>Sign in</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate("InscriptionScreen")} >
-
-              <Text style={styles.whiteColor}>No Account ? Create one</Text>
-              </TouchableOpacity>
-          </View>
-        </ImageBackground>
+      <View style={style.container}>
+        <ChatBot steps={steps} />
+        
+      </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  lgHeader:{
-    flex: 1,
-      justifyContent: "flex-end",
-      alignItems:"center"
-  },
-  lgContent:{
-    flex: 1,
-      padding:30,
-      justifyContent: "space-evenly"
-  },
-  lgFooter: {
-    flex: 1,
-      alignItems:"center",
-      justifyContent: "space-between"
-  },
-    lgTitle: {
-fontWeight:"bold",
-        fontSize: 20
-    },
-    whiteColor:{
-        color:"#fff",
-    },
-    loginButton: {
-        borderWidth:1,
-        borderColor:'rgba(255,255,255,0.5)',
-        alignItems:'center',
-        justifyContent:'center',
-        width:200,
-        height:50,
-        borderRadius:50,
-    },
-    lgInput: {
-      backgroundColor:"rgba(255,255,255, 0.3)"
-    }
-});

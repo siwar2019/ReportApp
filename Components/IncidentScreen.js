@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Button, Text, View } from "react-native";
+import { View} from "react-native";
 import Modal  from "react-native-modal";
-import { TouchableHighlight,Image,StyleSheet ,ScrollView,Picker,TouchableOpacity,NativeModules, Dimensions, StatusBar, SafeAreaView} from 'react-native';
-import { Form } from "native-base";
-import {ListItem, List,Icon,InputGroup, Input} from 'native-base' ;
+import { TouchableHighlight,Image,StyleSheet ,ScrollView,Picker,TouchableOpacity,NativeModules, StatusBar, SafeAreaView} from 'react-native';
+import {Container, Form, Right,ListItem, Button,Card,InputGroup, Input, CardItem,Body,Text} from 'native-base' ;
 import ImagePicker from 'react-native-image-picker';
+import Nav from "./Nav";
 //import ImagePicker2 from 'react-native-image-crop-picker';
 var ImagePicker3 = NativeModules.ImageCropPicker;
 export default class IncidentScreen extends Component {
@@ -36,14 +36,14 @@ export default class IncidentScreen extends Component {
     isModalVisible3: false
   };
   toggleModal = () => {
-    this.setState({ isModalVisible: !this.state.isModalVisible });
+      this.props.navigation.navigate("IncidentFormScreen", {type:'photo'})
   };
 
   toggleModal2 = () => {
-    this.setState({ isModalVisible2: !this.state.isModalVisible2 });
+      this.props.navigation.navigate("IncidentFormScreen", {type:'video'})
   };
   toggleModal3 = () => {
-    this.setState({ isModalVisible3: !this.state.isModalVisible3 });
+      this.props.navigation.navigate("IncidentFormScreen", {type:'streaming'})
   };
  //camera upload
  
@@ -112,6 +112,8 @@ handleChooseMultiplePhoto()
             });
         }).catch(e => alert(e));
     }
+
+
     scaledHeight(oldW, oldH, newW) {
       return (oldH / oldW) * newW;
   }
@@ -143,27 +145,78 @@ onlygaleryvideo=()=> {
       const { photo2 } = this.state2;
       return (
 
-        <ScrollView>
-          <View style={ {flex:1}}>
-            <View style={styles.padding}>
-             
-              <Text> Please shoose the way that you want to declare the incident with:</Text>
-            </View>
+          <Container>
+              <Nav/>
+          <ScrollView style={ {flex:1, padding:6}}>
 
-            <TouchableHighlight onPress={this.toggleModal}>
-              <Image style={styles.imagestyle} source={require('../assets/photo.png')} />
-            </TouchableHighlight>
+              <Text style={styles.textColor}> Please shoose the way that you want to declare the incident with:</Text>
 
-            <View style={styles.padding}></View>
-            <TouchableHighlight onPress={this.toggleModal2}>
-              <Image style={styles.imagestyle} source={require('../assets/video5.jpg')} />
-            </TouchableHighlight>
-
-            <View style={styles.padding}></View>
-            <TouchableHighlight onPress={() => this.toggleModal3()}>
-              <Image style={styles.imagestyle} source={require('../assets/live3.png')} />
-            </TouchableHighlight>
-
+              <Card style={{flexDirection:'row'}}>
+                  <CardItem style={{flex:1}}>
+                      <Body>
+                          <Image
+                              style={{width: '100%', height: 100, resizeMode: 'contain'}}
+                              source={require('../assets/victor/undraw_photo_4yb9.png')}
+                          />
+                      </Body>
+                  </CardItem>
+                  <CardItem style={{flex:3}}>
+                      <View>
+                          <Text style={styles.textColor}>
+                              Maecenas ut dolor in est porta volutpat quis sed arcu.
+                          </Text>
+                              <View >
+                          <Button  transparent style={{ alignSelf:'flex-end'}} onPress={this.toggleModal}>
+                              <Text >Create Form</Text>
+                          </Button>
+                              </View>
+                      </View>
+                  </CardItem>
+              </Card>
+              <Card style={{flexDirection:'row'}}>
+                  <CardItem style={{flex:1}}>
+                      <Body>
+                          <Image
+                              style={{width: '100%', height: 100, resizeMode: 'contain'}}
+                              source={require('../assets/victor/undraw_video_influencer_9oyy.png')}
+                          />
+                      </Body>
+                  </CardItem>
+                  <CardItem style={{flex:3}}>
+                      <View>
+                          <Text style={styles.textColor}>
+                              Suspendisse nec fringilla erat. Pellentesque accumsan molestie sapien
+                          </Text>
+                          <View >
+                              <Button  transparent style={{ alignSelf:'flex-end'}} onPress={this.toggleModal2}>
+                                  <Text >Create Form</Text>
+                              </Button>
+                          </View>
+                      </View>
+                  </CardItem>
+              </Card>
+              <Card style={{flexDirection:'row'}}>
+                  <CardItem style={{flex:1}}>
+                      <Body>
+                          <Image
+                              style={{width: '100%', height: 100, resizeMode: 'contain'}}
+                              source={require('../assets/victor/undraw_youtube_tutorial_2gn3.png')}
+                          />
+                      </Body>
+                  </CardItem>
+                  <CardItem style={{flex:3}}>
+                      <View>
+                          <Text style={styles.textColor}>
+                              Maecenas ut dolor in est porta volutpat quis sed arcu.
+                          </Text>
+                          <View >
+                              <Button  transparent style={{ alignSelf:'flex-end'}} onPress={() => this.toggleModal3()}>
+                                  <Text >Create Form</Text>
+                              </Button>
+                          </View>
+                      </View>
+                  </CardItem>
+              </Card>
             <Modal style={styles.view} isVisible={this.state.isModalVisible}>
               
               <View style={{ flex: 1 }}>
@@ -300,7 +353,7 @@ onlygaleryvideo=()=> {
                 <Button title="OK!" onPress={this.toggleModal2} />
               </View>
             </Modal>
-          </View>
+          </ScrollView>
 
 
           <Modal  style={styles.view} isVisible={this.state.isModalVisible3}>
@@ -376,7 +429,7 @@ onlygaleryvideo=()=> {
               </View>
             </Modal>
 
-        </ScrollView>
+          </Container>
       );
     }
   }
@@ -418,9 +471,8 @@ let styles = StyleSheet.create({
   imgView: {
     width: '50%',
     marginVertical: 10,
-   
-
-}
+},
+    textColor: {color: '#4A5568'}
   
  
 });
