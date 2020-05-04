@@ -12,8 +12,12 @@ import HomeScreen from './Components/HomeScreen';
 import AcceuilScreen from './Components/AcceuilScreen';
 import AppelScreen from './Components/AppelScreen';
 import ChatbotScreen from './Components/ChatbotScreen';
+import StreamingScreen from './Components/StreamingScreen';
+
 import InscriptionScreen from './Components/InscriptionScreen';
 import IncidentForm from "./Components/IncidentForm";
+import App2 from "./Components/App2";
+
 import { Root } from "native-base";
 
 function StackScreenChat() {
@@ -21,7 +25,7 @@ function StackScreenChat() {
     <Stack.Navigator>
       <Stack.Screen
         name="ChatBot"
-        component={ChatbotScreen}
+        component={App2}
         options={{ title: 'chatbot' }}
       />
     </Stack.Navigator>
@@ -71,6 +75,8 @@ function Navigation({ navigation }) {
             <Tab.Screen name="Incident" component={IncidentScreen} />
             <Tab.Screen name="Report" component={ReportScreen}   />
             <Tab.Screen name="Chatbot" component={StackScreenChat} />
+            <Tab.Screen name="live" component={StreamingScreen} />
+
 
           </Tab.Navigator>
         

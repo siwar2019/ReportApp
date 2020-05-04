@@ -1,0 +1,1 @@
+export const LoadingIcon = require("./icons/ic_loading.gif");

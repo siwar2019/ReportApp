@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-    View,
+ 
     ScrollView,
     StyleSheet,
  
@@ -122,7 +122,7 @@ export const StreamingScreen = BaseReduceCompnentRedux(
         
     } 
 );
-  
+
 const styles = StyleSheet.create({
     actionButtonIcon: {
       fontSize: 20,

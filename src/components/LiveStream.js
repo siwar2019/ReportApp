@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import {
     View,
-    ScrollView,
-    StyleSheet,
- 
-    Button,
-    View,
     Text, TouchableOpacity,StyleSheet
 } from "react-native";
 import { NodeCameraView } from 'react-native-nodemediaclient';
@@ -18,9 +13,7 @@ import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-
-export const StreamingScreen = BaseReduceCompnentRedux(
+export const LiveStream = BaseReduceCompnentRedux(
     (state, stateDefault) => {
         return stateDefault;
     },
@@ -120,9 +113,8 @@ export const StreamingScreen = BaseReduceCompnentRedux(
             );
         }
         
-    } 
+    }
 );
-  
 const styles = StyleSheet.create({
     actionButtonIcon: {
       fontSize: 20,
@@ -130,4 +122,3 @@ const styles = StyleSheet.create({
       color: 'white',
     },
   });
-
