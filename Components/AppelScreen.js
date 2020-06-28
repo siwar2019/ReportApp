@@ -8,7 +8,7 @@ import {
   ImageBackground,
   Linking,
 } from 'react-native';
-import {Button, Container, List, Right, Left, Thumbnail, Body, Text, ListItem} from 'native-base';
+import {Button, Container, List, Right, Left, Thumbnail, Body, Text, ListItem,Header,Title,Icon} from 'native-base';
 import call from 'react-native-phone-call';
 import Nav from "./Nav";
 
@@ -67,16 +67,33 @@ callPort= () => {
 
 
         <Container>
-        <Nav/>
+        <Header style={[styles.headerBg]}>
+
+              <Left>
+                <Button underlayColor="#125FFF" onPress={() => this.props.navigation.navigate("Acceuil")}
+                  style={[styles.text]} bordered rounded light>
+                  <Icon style={styles.whiteColor} name='md-arrow-back' />
+                </Button>
+              </Left>
+              <Body>
+                <Title style={[styles.text]}>Call urgency</Title>
+              </Body>
+              <Button underlayColor="#125FFF" onPress={() => this.props.navigation.navigate("Incident")}
+                  style={[styles.backButton]} bordered rounded light>
+                  <Icon style={styles.whiteColor} name='md-arrow-round-forward' />
+                </Button>
+           
+            </Header>
         <ScrollView >
-          <View style={{padding: 6}}>
-          <Text style={[{fontWeight: 'bold'}, styles.textColor]}>Duis in turpis orci. Quisque at
-            viverra massa
+          <View style={{paddingLeft:60}}>
+          <Text style={{fontWeight: 'bold',fontSize: 20,fontWeight: '600',color:"#D12000"}}> Emergency  HandHelp
           </Text>
-          <Text style={[styles.textColor]}>
-            auris elementum mauris mauris, in finibus lorem ultrices et. Fusce sed blandit turpis, sit
-            amet laoreet nunc.
-            Vivamus nec lacus dictum risus suscipit auctor ac sit amet libero.
+         
+            </View>
+            <View>
+              <Text>
+          Quickly place an emergency  for help, anytime and  any where in Tunisia!
+        
           </Text>
           </View>
           <List>
@@ -86,7 +103,7 @@ callPort= () => {
               </Left>
               <Body>
                 <Text>CIVIL PROTECTION</Text>
-                <Text note numberOfLines={1}>Its time to build a difference . .</Text>
+                <Text note numberOfLines={2}>immediate aftermath of a disaster...</Text>
               </Body>
               <Right>
                 <Button transparent onPress={this.callCivil}>
@@ -100,7 +117,7 @@ callPort= () => {
               </Left>
               <Body>
                 <Text>SAMU</Text>
-                <Text note numberOfLines={1}>Its time to build a difference . .</Text>
+                <Text note numberOfLines={2}> municipal humanitarian emergency service . .</Text>
               </Body>
               <Right>
                 <Button transparent onPress={this.callSamu}>
@@ -114,7 +131,7 @@ callPort= () => {
               </Left>
               <Body>
                 <Text>POLICE</Text>
-                <Text note numberOfLines={1}>Its time to build a difference . .</Text>
+                <Text note numberOfLines={2}>the civil authority of government . .</Text>
               </Body>
               <Right>
                 <Button transparent onPress={this.callPolice}>
@@ -128,7 +145,7 @@ callPort= () => {
               </Left>
               <Body>
                 <Text>Clinics and Emergencies</Text>
-                <Text note numberOfLines={1}>Its time to build a difference . .</Text>
+                <Text note numberOfLines={1}>find your need here. .</Text>
               </Body>
               <Right>
                 <Button transparent  onPress={() => Linking.openURL('http://www.chercheinfo.com/uploads/-7bb5ffeb18.pdf')}>
@@ -152,5 +169,12 @@ callPort= () => {
 }
 
 const styles = StyleSheet.create({
-  textColor: {color: '#4A5568'}
+  textColor: {color: '#4A5568'},
+  whiteColor:{ 
+        color:"#fff",
+       
+    },
+    text: {
+      textAlign:"center"
+    }
 });

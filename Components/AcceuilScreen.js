@@ -5,9 +5,45 @@ import {
     View,
     ScrollView
 } from 'react-native';
-import {Container, Text} from 'native-base';
+import {Container, Text,DeckSwiper,Card,CardItem,Left,Thumbnail,Body} from 'native-base';
 import Nav from "./Nav";
-
+const cards = [
+    {
+      text: 'Call police',
+     
+      image: require('../assets/police.jpg'),
+    },
+    {
+      text: 'Accident Report',
+     
+      image: require('../assets/crush.jpg'),
+    },
+    
+    {
+      text: 'Fire report',
+      
+      image: require('../assets/incendie.jpg'),
+  
+    },
+    {
+      text: 'Fire report',
+      
+      image: require('../assets/incendie2.jpg'),
+  
+    },
+    {
+      text: 'Flood report',
+      
+      image: require('../assets/innondation.jpg'),
+  
+    },
+    {
+      text: 'Flood report',
+      
+      image: require('../assets/tremblement.jpg'),
+  
+    },
+  ];
 export default class AcceuilScreen extends React.Component {
     static navigationOptions = {
         header: null,
@@ -15,37 +51,51 @@ export default class AcceuilScreen extends React.Component {
 
     render() {
         return (
-            <Container>
-                <Nav/>
-                <ScrollView>
-                    <Text style={[{fontWeight: 'bold', padding: 6}, styles.textColor]}> Duis in turpis orci. Quisque at
-                        viverra massa
-                    </Text>
-                    <View style={{flexDirection: 'row', padding: 6}}>
+            <Container style={{  backgroundColor: '#DDDDDD',}}>
+          
+                { <Nav/> }
+             
+                 
+                    <Text  style={styles.text}> Easy to report incidents</Text>
 
-                        <Text style={[styles.textColor, {flex: 2}]}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in mi iaculis, consequat dui a,
-                            egestas nisl.
-                            Aenean molestie venenatis ultrices. Fusce ut lobortis ipsum.
-                            Vestibulum scelerisque sagittis tellus eu posuere. Proin vel fermentum ipsum.
-                        </Text>
-                        <Image
-                            style={{width: 150, height: 150}}
-                            source={require('../assets/victor/home_img_1.png')}
-                        />
-                    </View>
-                    <View style={{padding: 6}}>
-                        <Text style={[styles.textColor]}>
-                            auris elementum mauris mauris, in finibus lorem ultrices et. Fusce sed blandit turpis, sit
-                            amet laoreet nunc.
-                            Vivamus nec lacus dictum risus suscipit auctor ac sit amet libero.
-                        </Text>
-                        <Image
-                            style={{width: '100%', height: 150, resizeMode: 'contain'}}
+<Text style={styles.text2}>
+Report in two taps, it’s so easy for your to report incidents with photos, text and GPS
+                    </Text>
+                    <View>
+                    <Image
+                            style={{width: '100%', height: 100, resizeMode: 'contain'}}
                             source={require('../assets/victor/home_img_2.png')}
                         />
-                    </View>
-                </ScrollView>
+          <Text style={{fontWeight: 'bold',paddingTop:10,paddingBottom:10,color:"#370028",fontweight:"arial"}}>There is no more beautiful gesture than saving a life.</Text>
+         
+        
+                  
+          <DeckSwiper
+            dataSource={cards}
+            renderItem={item =>
+              <Card style={{ elevation: 3 }}>
+                <CardItem>
+                  <Left>
+                    <Thumbnail source={item.image} />
+                    <Body>
+                      <Text>{item.text}</Text>
+                   
+                    </Body>
+                  </Left>
+                </CardItem>
+                <CardItem cardBody>
+                  <Image style={{ height: 200, flex: 1 }} source={item.image} />
+                </CardItem>
+                <CardItem>
+                 
+                  <Text>{item.name}</Text>
+                </CardItem>
+              </Card>
+            }
+          />
+         
+        </View>
+   
             </Container>
 
         );
@@ -55,6 +105,21 @@ export default class AcceuilScreen extends React.Component {
 
 }
 const styles = StyleSheet.create({
-    textColor: {color: '#4A5568'}
+    
+ 
+    text:  {   fontSize: 30,
+      fontWeight: '600',
+      color: '#4169E1',
+      paddingLeft:20,
+      paddingBottom:10,
+      fontWeight: 'bold'
+    },
+    text2:{
+      fontSize: 20,
+      fontWeight: '600',
+      color: 'black',
+      paddingLeft:20,
+    }
+    
 });
 

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View} from "react-native";
 import Modal  from "react-native-modal";
 import { TouchableHighlight,Image,StyleSheet ,ScrollView,Picker,TouchableOpacity,NativeModules, StatusBar, SafeAreaView} from 'react-native';
-import {Container, Form, Right,ListItem, Button,Card,InputGroup, Input, CardItem,Body,Text} from 'native-base' ;
+import {Container, Form, Right,ListItem, Button,Card,InputGroup, Input, CardItem,Body,Text,Title,Icon,Header,Left} from 'native-base' ;
 import ImagePicker from 'react-native-image-picker';
 import ImagePicker2 from 'react-native-image-crop-picker';
 import Nav from "./Nav";
@@ -147,7 +147,26 @@ onlygaleryvideo=()=> {
       return (
 
           <Container>
-              <Nav/>
+             <Header style={[styles.headerBg]}>
+             
+              <Left>
+                <Button underlayColor="#125FFF" onPress={() => this.props.navigation.navigate("Call urgency")}
+                  style={[styles.backButton]} bordered rounded light>
+                  <Icon style={styles.whiteColor} name='md-arrow-back' />
+                </Button>
+              </Left>
+              <Body>
+                <Title style={[styles.padding]}>declare incident</Title>
+              </Body>
+            
+                <Button underlayColor="#125FFF" onPress={() => this.props.navigation.navigate("Acceuil")}
+                  style={[styles.backButton]} bordered rounded light>
+                  <Icon style={styles.whiteColor} name='home' />
+                </Button>
+           
+            
+            </Header>
+
           <ScrollView style={ {flex:1, padding:6}}>
 
               <Text style={styles.textColor}> Please shoose the way that you want to declare the incident with:</Text>
@@ -164,7 +183,7 @@ onlygaleryvideo=()=> {
                   <CardItem style={{flex:3}}>
                       <View>
                           <Text style={styles.textColor}>
-                              Maecenas ut dolor in est porta volutpat quis sed arcu.
+                             Upload photos from your galery or directly use your phone camera..
                           </Text>
                               <View >
                           <Button  transparent style={{ alignSelf:'flex-end'}} onPress={this.toggleModal}>
@@ -186,8 +205,7 @@ onlygaleryvideo=()=> {
                   <CardItem style={{flex:3}}>
                       <View>
                           <Text style={styles.textColor}>
-                              Suspendisse nec fringilla erat. Pellentesque accumsan molestie sapien
-                          </Text>
+                          Upload videos from your galery or directly use your phone camera..                          </Text>
                           <View >
                               <Button  transparent style={{ alignSelf:'flex-end'}} onPress={this.toggleModal2}>
                                   <Text >Create Form</Text>
@@ -208,7 +226,7 @@ onlygaleryvideo=()=> {
                   <CardItem style={{flex:3}}>
                       <View>
                           <Text style={styles.textColor}>
-                              Maecenas ut dolor in est porta volutpat quis sed arcu.
+                          Get real-time visibility and notify the right people to take action and resolve the incident
                           </Text>
                           <View >
                               <Button  transparent style={{ alignSelf:'flex-end'}} onPress={() => this.toggleModal3()}>
@@ -473,7 +491,10 @@ let styles = StyleSheet.create({
     width: '50%',
     marginVertical: 10,
 },
-    textColor: {color: '#4A5568'}
+    textColor: {color: '#4A5568'},
+    padding:{
+    paddingRight:30
+    }
   
  
 });

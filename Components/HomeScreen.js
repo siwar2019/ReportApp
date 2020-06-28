@@ -32,7 +32,7 @@ _loadInitialState=async()=> {
     });
   }
   login = () => {
-    fetch("http://192.168.1.6:3001/authentification", {
+    fetch("http://192.168.43.41:3001/authentification", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -63,9 +63,9 @@ _loadInitialState=async()=> {
 
   render() {
     return (
-        <ImageBackground  source={require('../assets/back.jpeg')} style={styles.container}>
+        <ImageBackground  source={require('../assets/bg3.png')} style={styles.container}>
           <View style={styles.lgHeader}>
-              <Image source={require('../assets/logo-white.png')}></Image>
+              <Image style={styles.img} source={require('../assets/victor/final.jpg')}></Image>
               <Text style={[styles.lgTitle, styles.whiteColor]}> Report App </Text>
           </View>
           <View style={styles.lgContent}>
@@ -92,12 +92,10 @@ _loadInitialState=async()=> {
 
                   
               </TouchableOpacity>
-              <TouchableOpacity underlayColor="white"  onPress={() =>  this.props.navigation.navigate('Navigation')} style={[styles.loginButton, styles.lgInput]} bordered  rounded light> 
-             
-                  <Text  style={styles.whiteColor}>Sign in</Text>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate("Navigation")} >
 
-                  
-              </TouchableOpacity>
+<Text style={styles.whiteColor}>log</Text>
+</TouchableOpacity>
               <TouchableOpacity onPress={() => this.props.navigation.navigate("InscriptionScreen")} >
 
               <Text style={styles.whiteColor}>No Account ? Create one</Text>
@@ -112,6 +110,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingBottom:30,
+  },
+  img:{
+height:100,
+width:100,
+borderRadius:30,
+
   },
   lgHeader:{
     flex: 1,

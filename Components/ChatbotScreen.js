@@ -6,18 +6,7 @@ import {
   Image
 } from 'react-native';
 import ChatBot from 'react-native-chatbot';
-
-
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center'
-  },
-  text: {
-    fontSize: 25
-  }
-});
+import {Container,Header,Left,Right,Button,Icon,Body,Title} from "native-base"
 
 
 const steps = [
@@ -37,6 +26,7 @@ const steps = [
      user: true,
      trigger: "Asking question"
    },
+  
   {
     id: "Asking question",
     message: "Hi {previousValue}, Glad to know you !!",
@@ -97,7 +87,11 @@ const steps = [
       }
     }
   },
- 
+  {
+    id: "userinput3",
+    user: true,
+    trigger: "end"
+  },
   {
     id: '8',
     message: 'First you should call police immediatelly on  197',
@@ -107,7 +101,7 @@ const steps = [
   {
     id: "step2",
     message: 'then call  198 Medical ambulances at 71 780 000 or 71 781 000',
-    trigger: "Done"
+    trigger: "userinput3"
   },
   {
     id: 'Sinking',
@@ -146,10 +140,42 @@ const steps = [
 export default class App extends React.Component {
   render() {
     return (
+      
+      <Container>
+      <Header >
+
+            <Left>
+              <Button underlayColor="#125FFF" onPress={() => this.props.navigation.navigate("Call")}
+                bordered rounded light>
+                <Icon  name='md-arrow-back' />
+              </Button>
+            </Left>
+            <Body>
+              <Title >Call urgency</Title>
+            </Body>
+            <Button underlayColor="#125FFF" onPress={() => this.props.navigation.navigate("Acceuil")}
+               bordered rounded light >
+                <Icon  name='home' />
+              </Button>
+         
+          </Header>
       <View style={style.container}>
         <ChatBot steps={steps} />
         
       </View>
+      </Container>
     );
   }
+  
 }
+const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    // alignItems: 'center',
+    // justifyContent: 'center'
+  },
+  text: {
+    fontSize: 25
+  }
+});
+

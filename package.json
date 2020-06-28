@@ -17,22 +17,15 @@
     "@react-navigation/stack": "^5.1.0",
     "native-base": "^2.13.8",
     "react": "16.9.0",
-<<<<<<< HEAD
     "react-native": "0.61.5",
     "react-native-chatbot": "0.0.1-alpha.12",
-=======
-    "react-native": "^0.62.0",
->>>>>>> d7f84dda59a4014d9a1924c5d1c0058f97c9fd92
     "react-native-crypto-js": "^1.0.0",
     "react-native-gesture-handler": "^1.6.0",
     "react-native-image-crop-picker": "^0.28.0",
     "react-native-image-picker": "^2.3.1",
     "react-native-img-button": "^1.0.1",
     "react-native-ionicons": "^4.6.4",
-<<<<<<< HEAD
     "react-native-live-stream": "^1.0.1",
-=======
->>>>>>> d7f84dda59a4014d9a1924c5d1c0058f97c9fd92
     "react-native-maps": "0.27.1",
     "react-native-modal": "^11.5.4",
     "react-native-phone-call": "^1.0.9",
@@ -41,13 +34,9 @@
     "react-native-safe-area-context": "^0.7.3",
     "react-native-safe-area-view": "^1.0.0",
     "react-native-screens": "^2.0.0-beta.13",
-<<<<<<< HEAD
     "react-navigation-stack": "^2.2.1",
     "stream-chat": "^1.6.1",
     "styled-components": "^5.1.0"
-=======
-    "react-navigation-stack": "^2.2.1"
->>>>>>> d7f84dda59a4014d9a1924c5d1c0058f97c9fd92
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

@@ -6,6 +6,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import ReportScreen from './Components/ReportScreen' ;
 import IncidentScreen from './Components/IncidentScreen' ;
 
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import HomeScreen from './Components/HomeScreen';
@@ -14,9 +15,13 @@ import AppelScreen from './Components/AppelScreen';
 import ChatbotScreen from './Components/ChatbotScreen';
 import InscriptionScreen from './Components/InscriptionScreen';
 import IncidentForm from "./Components/IncidentForm";
+import Nav from "./Components/Nav";
 import { Root } from "native-base";
 
-function StackScreenChat() {
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+/* function StackScreenChat() {
+  hethi en cas ou n7ebou on modifie lentete  avec un titre , f ana componenet
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -26,7 +31,10 @@ function StackScreenChat() {
       />
     </Stack.Navigator>
   );
-}
+} */
+
+
+
 /*function StackScreenAppel() {
   return (
     <Stack.Navigator>
@@ -62,16 +70,64 @@ function Navigation({ navigation }) {
       return (
        
           <Tab.Navigator 
-          
+          //konna najmou n7otou les icones lkol mta3 les routes lahnay avec ionicon haka: 
+          //avec import this: import Ionicons from 'react-native-vector-icons/Ionicons'; 
+          /* screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+  
+              if (route.name === 'Acceuil') {
+                iconName = focused
+                  ? 'logo-skype'
+                  : 'ios-information-circle-outline';
+              } else if (route.name === 'Call urgency') {
+                iconName = focused ? 'menu'
+                : 'logo-sass' ;
+              }
+  
+              // You can return any component that you like here!
+           return <Ionicons name={iconName} size={size} color={color} />;
+            },
+          })} */
+          tabBarOptions={{
+            activeTintColor: 'tomato',
+            inactiveTintColor: 'gray',
+          }}
           >
-            <Tab.Screen name="Acceuil" component={AcceuilScreen}  //thezna el page acceuil screen
+            <Tab.Screen name="Home" component={AcceuilScreen}  //thezna el page acceuil screen
+            options={{
+              tabBarLabel: 'Home',
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="home" color={color} size={size} />
+              ),
+            }} 
           
               />
-            <Tab.Screen name="Call urgency " component={AppelScreen}  />
-            <Tab.Screen name="Incident" component={IncidentScreen} />
-            <Tab.Screen name="Report" component={ReportScreen}   />
-            <Tab.Screen name="Chatbot" component={StackScreenChat} />
-
+            <Tab.Screen name="Call urgency" component={AppelScreen}  
+             options={{
+              tabBarLabel: 'Call urgency',
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="cellphone-sound" color={color} size={size} />
+              ),
+            }} 
+            />
+            <Tab.Screen name="Incident" component={IncidentScreen}
+             options={{
+              tabBarLabel: 'Incident',
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="alarm-light" color={color} size={size} />
+                
+              ),
+            }} />
+            {/* <Tab.Screen name="Report" component={ReportScreen}   /> */} 
+            <Tab.Screen name="Chatbot" component={ChatbotScreen} 
+            options={{
+              tabBarLabel: 'Chatbot',
+              tabBarIcon:({color,size})=> (
+                <MaterialCommunityIcons name="comment-text-multiple" color={color} size={size} />
+                ),
+                }} />
+              
           </Tab.Navigator>
         
       );
@@ -90,12 +146,18 @@ export default function App() {
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator headerMode="none">
-          <Stack.Screen name="Home" component={HomeScreen}
-          />
+          <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Navigation" component={Navigation} />
           <Stack.Screen name="InscriptionScreen" component={InscriptionScreen} />
             <Stack.Screen name="IncidentFormScreen" component={IncidentForm} />
-            <Stack.Screen name="StackScreenChat" component={StackScreenChat} />
+          {/*kenet heka pour modifier l'entete fel fonction stackscreen chat **  <Stack.Screen name="StackScreenChat" component={StackScreenChat} /> */}
+          <Stack.Screen name="Chatbot" component={ChatbotScreen} />
+
+            <Stack.Screen name="Acceuil" component={AcceuilScreen} />
+            <Stack.Screen name="Call urgency" component={AppelScreen} /> 
+            <Stack.Screen name="Incident" component={IncidentScreen} 
+            /> 
+            
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

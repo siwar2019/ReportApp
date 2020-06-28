@@ -24,7 +24,7 @@ import {
     Icon,
     Button,
     Footer,
-    Item
+    Item,Body
 } from 'native-base';
 import CryptoJS from "react-native-crypto-js";
 export default class InscriptionScreen extends React.Component {
@@ -141,7 +141,6 @@ async sendCred  (props){
           "email":this.state.form.email,
           "password":CryptoJS.AES.encrypt(this.state.form.password, 'secret key 123').toString() ,
           "address":this.state.form.address,
-          
           'firstname': this.state.form.firstname,
           "lastname":this.state.form.lastname,
           'tel': this.state.form.tel,
@@ -150,6 +149,7 @@ async sendCred  (props){
         })
        })
        .then(res=>res.json())
+       this.props.navigation.navigate('Home');
 /*          .then(async (data)=>{
               try {
                 await AsyncStorage.setItem('token',data.token)
@@ -162,7 +162,7 @@ async sendCred  (props){
      }
   render() {
     return (
-            <ImageBackground source={require('../assets/bg-lg.jpg')} style={styles.container}>
+            <ImageBackground source={require('../assets/bg3.png')} style={styles.container}>
 
             <Header style={styles.signInHeader}>
                 <TouchableOpacity underlayColor="white"  onPress={() => this.props.navigation.navigate("Home")}
