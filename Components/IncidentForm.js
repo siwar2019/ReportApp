@@ -21,6 +21,8 @@ import Nav from "./Nav";
 import { ScrollView, StyleSheet, Modal, TouchableOpacity, Image } from "react-native";
 import ImagePicker from 'react-native-image-crop-picker';
 import MapView from 'react-native-maps';
+import ReportScreen from './ReportScreen';
+import RNFetchBlob from 'rn-fetch-blob'
 
 export default class IncidentForm extends React.Component {
     constructor(props) {
@@ -88,76 +90,76 @@ export default class IncidentForm extends React.Component {
             waitAnimationEnd: false,
             includeExif: true,
             forceJpg: true,
-            includeBase64: true,// added this jetni donne f console
+            includeBase64: true,//image to string
           
         }).then(images => {  
              console.log('-----------------------------');
              //console.log(images);
             // let data= JSON.parse(images);
-            console.log(JSON.stringify(images));
-
+            console.log(JSON.stringify(images))
+            const split = images[0].path.split('/');
+            const name = split[split.length-1];
+            console.log(split, name)
             this.setState({
                 // images : ''
                             images: [...this.state.images, ...images.map(i => {
                                 return i
                             })]
                        });
-
-            //  console.log('images', JSON.stringify(images));
-            
-            fetch("http://192.168.1.8:3001/image", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "fileData":images[0].data,// this.state.fileData,
-                    "filePath": images[0].path,
-                    "fileUri": images[0].fileUri,
-
-
-                })
-            })
-                .then(res => res.json())
-                .then(r=>console.log(r))
+                       RNFetchBlob.fetch('POST', 'http://c885adf023b3.ngrok.io/image', {
+                        'Content-Type' : 'multipart/form-data',
+                      }, [
+                        // element with property `filename` will be transformed into `file` in form data
+                        { name : 'image', filename : name, data: images[0].data},
+                      ]
+                    ).then(console.log)
             this.toggleChoiceImportModal();
         }).catch(e => this.toggleChoiceImportModal());
     }
-//****************************************new one  */
+    // video final
     handleChooseMultiplevideo() {
+
+
         ImagePicker.openPicker({
-            multiple: true,
             mediaType: "video",
-            includeBase64: true,
-        }).then(videos => {
+            width: 100,
+            height: 150,
+           //cropping: true,
+            waitAnimationEnd: false,
+            includeExif: true,
+           // forceJpg: true,
+         includeBase64: true,//image to string
+            multiple: true,
+      
           
-            console.log(JSON.stringify(videos.data));
-
+        }).then(videos => {  
+             console.log('-----------------------------');
+             //console.log(images);
+            // let data= JSON.parse(images);
+            console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",JSON.stringify(videos))
+          
+            const split = videos[0].path.split('/');
+            const name = split[split.length-1];
             this.setState({
-              
-                videos: [...this.state.videos, ...videos.map(video => {
-                    return video
-                })]
-            });
-            //add video save to dataase
-            fetch("http://192.168.1.8:3001/video", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "fileData":videos[0].data,
-                    "filePath": videos[0].path,
-                    "fileUri": videos[0].fileUri,
 
-
-                })
-            })
-                .then(res => res.json())
-                .then(r=>console.log(r))
+                // images : ''
+                videos: [...this.state.videos, ...videos.map(i => {
+                                return i
+                            })]
+                       });
+                       RNFetchBlob.fetch('POST', 'https://929bcd1edf21.ngrok.io/video2', {
+                        'Content-Type' : 'multipart/form-data',
+                      }, [
+                        // element with property `filename` will be transformed into `file` in form data
+                       /*  { name : 'videos', filename : name, data: "RNFetchBlob-file://"+name } */
+                       /* { name: 'doc', filename: data.fileName, type: data.type, data: RNFetchBlob.wrap(data.path) }, */
+                       { name: 'videos', filename: name, data: RNFetchBlob.wrap(videos[0].path) }
+                      ]
+                    ).then((response) => console.log("ggg",response))
             this.toggleChoiceImportModal();
         }).catch(e => this.toggleChoiceImportModal());
     }
+
   /*   //directlu jdida
     handleDirectlyTakePhoto() {
         ImagePicker.openCamera({
@@ -207,7 +209,7 @@ export default class IncidentForm extends React.Component {
             this.setState({
                 images: [...this.state.images, images]
             }); 
-            fetch("http://192.168.1.8:3001/image", {
+            fetch("http://192.168.43.41:3001/image", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -251,7 +253,7 @@ export default class IncidentForm extends React.Component {
             this.toggleChoiceImportModal();
         });
     }
-
+/*  */
     toggleChoiceImportModal() {
         this.setState({ isChoiceImportModalVisible: !this.state.isChoiceImportModalVisible });
     }
@@ -329,6 +331,7 @@ export default class IncidentForm extends React.Component {
                         </Button>
                     </Right>
                 </Header>
+                
                 <ScrollView style={{ flex: 1, padding: 6 }}>
                     <Text style={[styles.textColor]}> easily create any type of online incident
                     enter the basics of what happened ,capture a photo or a video ,and ensure the right people are notified.
@@ -336,24 +339,16 @@ export default class IncidentForm extends React.Component {
 
 
                     </Text>
+                    
                     <Form style={{ paddingTop: 4 }}>
+                        
                         <View style={{ paddingBottom: 4 }}>
                             <Text style={[{ fontWeight: 'bold' }, styles.textColor]}>
                                 Description:
                             </Text>
-                            <Textarea rowSpan={5} bordered placeholder="Textarea" />
+                            <Textarea rowSpan={3} bordered placeholder="Textarea" />
                         </View>
-                        <View style={{ paddingBottom: 4 }}>
-                            <Text style={[{ fontWeight: 'bold' }, styles.textColor]}>
-                                Position :
-                            </Text>
-                            <View style={{ height: 200 }}>
-                                <MapView
-                                    style={{ height: 200 }}
-
-                                />
-                            </View>
-                        </View>
+                        
                         <View style={{ paddingBottom: 4 }}>
                             <Text style={[{ fontWeight: 'bold' }, styles.textColor]}>
                                 Incident Type :
@@ -368,10 +363,25 @@ export default class IncidentForm extends React.Component {
                                 </Picker>
                             </Item>
                         </View>
+                        <ScrollView>
+                        <View style={{ paddingBottom: 4 }}>
+                            <Text style={[{ fontWeight: 'bold' }, styles.textColor]}>
+                                Position :
+                            </Text>
+                            <View style={{ height: 250 }}>
+                                <ReportScreen
+                                    style={{ height: 70 }}
+
+                                />
+                            </View>
+                        </View>
+                        </ScrollView>
+                      
                         <View style={{ paddingBottom: 4 }}>
                             <Text style={[{ fontWeight: 'bold' }, styles.textColor]}>
                                 Import {type === 'photo' ? 'photo :' : 'video :'}
                             </Text>
+                            
                             <View >
                                 <List>
                                     {this.state.videos ? this.state.videos.map((video, index) =>
@@ -379,13 +389,17 @@ export default class IncidentForm extends React.Component {
                                     {this.state.images ? this.state.images.map((image, index) =>
                                         this.renderAsset(image, index)) : null}
                                 </List>
+
+                                
                                 <View style={{ padding: 6, minWidth: 300, justifyContent: 'center' }}>
                                     <Button transparent iconLeft full onPress={this.toggleChoiceImportModal.bind(this)}>
                                         <Icon name='add' />
                                         <Text>add media</Text>
                                     </Button>
                                 </View>
+                                
                             </View>
+                            
                         </View>
                     </Form>
                 </ScrollView>
@@ -536,3 +550,85 @@ const styles = StyleSheet.create({
     colorGrey: { color: '#4A5568' }
 });
 
+/* // multiple phot multiple video 9dima,, save json fel base w t7awalha base 64
+handleChooseMultiplePhoto() {
+
+
+    ImagePicker.openPicker({
+        multiple: true,
+        width: 100,
+        height: 150,
+        cropping: true,
+        waitAnimationEnd: false,
+        includeExif: true,
+        forceJpg: true,
+        includeBase64: true,// added this jetni donne f console
+      
+    }).then(images => {  
+         console.log('-----------------------------');
+         //console.log(images);
+        // let data= JSON.parse(images);
+        console.log(JSON.stringify(images));
+
+        this.setState({
+            // images : ''
+                        images: [...this.state.images, ...images.map(i => {
+                            return i
+                        })]
+                   });
+
+        //  console.log('images', JSON.stringify(images));
+        
+        fetch("http://192.168.1.8:3001/image", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "fileData":images[0].data,// this.state.fileData,
+                "filePath": images[0].path,
+                "fileUri": images[0].fileUri,
+
+
+            })
+        })
+            .then(res => res.json())
+            .then(r=>console.log(r))
+        this.toggleChoiceImportModal();
+    }).catch(e => this.toggleChoiceImportModal());
+}
+//****************************************new one  
+handleChooseMultiplevideo() {
+    ImagePicker.openPicker({
+        multiple: true,
+        mediaType: "video",
+        includeBase64: true,
+    }).then(videos => {
+      
+        console.log(JSON.stringify(videos.data));
+
+        this.setState({
+          
+            videos: [...this.state.videos, ...videos.map(video => {
+                return video
+            })]
+        });
+        //add video save to dataase
+        fetch("http://192.168.1.8:3001/video", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "fileData":videos[0].data,
+                "filePath": videos[0].path,
+                "fileUri": videos[0].fileUri,
+
+
+            })
+        })
+            .then(res => res.json())
+            .then(r=>console.log(r))
+        this.toggleChoiceImportModal();
+    }).catch(e => this.toggleChoiceImportModal());
+} */

@@ -127,7 +127,7 @@ function Navigation({ navigation }) {
                 <MaterialCommunityIcons name="comment-text-multiple" color={color} size={size} />
                 ),
                 }} />
-              
+              <Tab.Screen name="report" component={ReportScreen} ></Tab.Screen>
           </Tab.Navigator>
         
       );
@@ -155,8 +155,9 @@ export default function App() {
 
             <Stack.Screen name="Acceuil" component={AcceuilScreen} />
             <Stack.Screen name="Call urgency" component={AppelScreen} /> 
-            <Stack.Screen name="Incident" component={IncidentScreen} 
-            /> 
+            <Stack.Screen name="Incident" component={IncidentScreen} /> 
+            <Stack.Screen name="Report" component={ReportScreen} /> 
+
             
         </Stack.Navigator>
       </NavigationContainer>

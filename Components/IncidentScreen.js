@@ -9,7 +9,7 @@ import Nav from "./Nav";
 //import ImagePicker2 from 'react-native-image-crop-picker';
 var ImagePicker3 = NativeModules.ImageCropPicker;
 export default class IncidentScreen extends Component {
- 
+ //nooooooooooooooooooooo//
   constructor() {
     super();
     this.state = {
@@ -104,6 +104,10 @@ handleChooseMultiplePhoto()
             includeExif: true,
             forceJpg: true,
         }).then(images => {
+
+          console.log('--------------------------------------------------')
+          console.log(images)
+
             this.setState({
                 image: null,
                 images: images.map(i => {

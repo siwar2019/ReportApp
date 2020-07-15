@@ -36,6 +36,7 @@
 		938564B20ECD47F8851FC2B0 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E759279528B84DBDBB967E14 /* SimpleLineIcons.ttf */; };
 		256E94B5D92948BC84DFF166 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A7F6F008B4145FF870F4E33 /* Zocial.ttf */; };
 		38FE624DEFCF4061AD9FC5D6 /* libRCTLiveStream.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73C20121E7D0483B8916985A /* libRCTLiveStream.a */; };
+		45C73D21674E4E408CBCDAA0 /* libRNVideoTrimmer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 148410A471924A7985A1429B /* libRNVideoTrimmer.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +93,8 @@
 		1A7F6F008B4145FF870F4E33 /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		00416AC3E4E74314A6C48883 /* RCTLiveStream.xcodeproj */ = {isa = PBXFileReference; name = "RCTLiveStream.xcodeproj"; path = "../node_modules/react-native-live-stream/ios/RCTLiveStream.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		73C20121E7D0483B8916985A /* libRCTLiveStream.a */ = {isa = PBXFileReference; name = "libRCTLiveStream.a"; path = "libRCTLiveStream.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		5265C2BE68294405A5CD0F5F /* RNVideoTrimmer.xcodeproj */ = {isa = PBXFileReference; name = "RNVideoTrimmer.xcodeproj"; path = "../node_modules/react-native-video-trimmer/ios/RNVideoTrimmer.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		148410A471924A7985A1429B /* libRNVideoTrimmer.a */ = {isa = PBXFileReference; name = "libRNVideoTrimmer.a"; path = "libRNVideoTrimmer.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +110,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				38FE624DEFCF4061AD9FC5D6 /* libRCTLiveStream.a in Frameworks */,
+				45C73D21674E4E408CBCDAA0 /* libRNVideoTrimmer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				00416AC3E4E74314A6C48883 /* RCTLiveStream.xcodeproj */,
+				5265C2BE68294405A5CD0F5F /* RNVideoTrimmer.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -557,9 +562,11 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/..",
 					"$(SRCROOT)/..",
 				);
 			};
@@ -584,9 +591,11 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/..",
 					"$(SRCROOT)/..",
 				);
 			};
@@ -611,6 +620,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/..",
+					"$(SRCROOT)/..",
 				);
 			};
 			name = Debug;
@@ -632,6 +642,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/..",
 					"$(SRCROOT)/..",
 				);
 			};
@@ -664,9 +675,11 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/..",
 					"$(SRCROOT)/..",
 				);
 			};
@@ -699,9 +712,11 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/..",
 					"$(SRCROOT)/..",
 				);
 			};
@@ -733,9 +748,11 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/..",
 					"$(SRCROOT)/..",
 				);
 			};
@@ -767,9 +784,11 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/..",
 					"$(SRCROOT)/..",
 				);
 			};
