@@ -15,18 +15,23 @@ import {
     Header,
     List,
     Thumbnail,
-    Body, Title, ListItem
+    Body, Title, ListItem,
 } from "native-base";
 import Nav from "./Nav";
-import { ScrollView, StyleSheet, Modal, TouchableOpacity, Image } from "react-native";
+import { ScrollView, StyleSheet, Modal, TouchableOpacity, Image ,TouchableHighlight} from "react-native";
 import ImagePicker from 'react-native-image-crop-picker';
 import MapView from 'react-native-maps';
 import ReportScreen from './ReportScreen';
 import RNFetchBlob from 'rn-fetch-blob'
 
 export default class IncidentForm extends React.Component {
+    
+    
+//pour recuperer la valeur de formulaire  dans la base
+
     constructor(props) {
         super(props);
+        
         this.state = {
             isChoiceImportModalVisible: false,
             images: [],
@@ -38,40 +43,33 @@ export default class IncidentForm extends React.Component {
             fileData: null,
             filepath: null,
             file: null,
-
-
+         
         }
-
+       /* this.state = {
+            form: {
+                description: null,
+                
+            }
+        }  */
+        
     }
 
-    setfileData(text) {
+    setdescription(text) {
         this.setState({
             form: {
-                fileData: text,
-                filePath: this.state.form.filePath,
-                file: this.state.form.fileUri,
-
+                description: text,
+                
             }
         });
     }
-    setfilePath(text) {
-        this.setState({
-            form: {
-                fileData: this.state.form.fileData,
-                file: text,
-                fileUri: this.state.form.fileUri,
-
-
-            }
-        });
-    }
+    
     setfileUri(text) {
         this.setState({
             form: {
                 fileData: this.state.form.fileData,
                 file: this.state.form.filepath,
-                fileUri: text
-
+                fileUri: text,
+              
 
             }
         });
@@ -79,6 +77,27 @@ export default class IncidentForm extends React.Component {
     backNavigation = () => {
         this.props.navigation.navigate("Incident")
     };
+    //save description to database
+    async savedata  (props){
+        console.warn('my form values')
+        this.backNavigation()
+           fetch("http://192.168.43.41:3001/savedata",{
+             method:"POST",
+             headers: {
+              'Content-Type': 'application/json'
+            },
+            body:JSON.stringify({
+            //  "description":this.state.form.description,
+            "description" :this.state.form.description,
+            "incident_type":this.state.PickerValueHolder,
+              
+    
+    
+            })
+           })
+           .then(res=>res.json())
+         
+         }
     handleChooseMultiplePhoto() {
 
 
@@ -106,7 +125,7 @@ export default class IncidentForm extends React.Component {
                                 return i
                             })]
                        });
-                       RNFetchBlob.fetch('POST', 'http://c885adf023b3.ngrok.io/image', {
+                       RNFetchBlob.fetch('POST', 'https://0b191ae7349e.ngrok.io/image', {
                         'Content-Type' : 'multipart/form-data',
                       }, [
                         // element with property `filename` will be transformed into `file` in form data
@@ -116,10 +135,32 @@ export default class IncidentForm extends React.Component {
             this.toggleChoiceImportModal();
         }).catch(e => this.toggleChoiceImportModal());
     }
+    //video from camera 
+    handleDirectlyTakeVideo() {
+        ImagePicker.openCamera({
+           mediaType: 'video',
+       }).then(video => {
+       
+           this.setState({
+               videos: [...this.state.videos, video
+               ]
+           });
+           const split = videos[0].path.split('/');
+           const name = split[split.length-1];
+           RNFetchBlob.fetch('POST', 'https://8cf63cea07d1.ngrok.io/video3', {
+            'Content-Type' : 'multipart/form-data',
+          }, [
+            // element with property `filename` will be transformed into `file` in form data
+           /*  { name : 'videos', filename : name, data: "RNFetchBlob-file://"+name } */
+           /* { name: 'doc', filename: data.fileName, type: data.type, data: RNFetchBlob.wrap(data.path) }, */
+           { name: 'videos', filename: name, data: RNFetchBlob.wrap(videos[0].path) }
+          ]
+        ).then((response) => console.log("ggg",response))
+this.toggleChoiceImportModal();
+}).catch(e => this.toggleChoiceImportModal());
+}
     // video final
     handleChooseMultiplevideo() {
-
-
         ImagePicker.openPicker({
             mediaType: "video",
             width: 100,
@@ -131,7 +172,6 @@ export default class IncidentForm extends React.Component {
          includeBase64: true,//image to string
             multiple: true,
       
-          
         }).then(videos => {  
              console.log('-----------------------------');
              //console.log(images);
@@ -142,12 +182,12 @@ export default class IncidentForm extends React.Component {
             const name = split[split.length-1];
             this.setState({
 
-                // images : ''
+             
                 videos: [...this.state.videos, ...videos.map(i => {
                                 return i
                             })]
                        });
-                       RNFetchBlob.fetch('POST', 'https://929bcd1edf21.ngrok.io/video2', {
+                       RNFetchBlob.fetch('POST', 'https://0b191ae7349e.ngrok.io/video2', {
                         'Content-Type' : 'multipart/form-data',
                       }, [
                         // element with property `filename` will be transformed into `file` in form data
@@ -155,7 +195,7 @@ export default class IncidentForm extends React.Component {
                        /* { name: 'doc', filename: data.fileName, type: data.type, data: RNFetchBlob.wrap(data.path) }, */
                        { name: 'videos', filename: name, data: RNFetchBlob.wrap(videos[0].path) }
                       ]
-                    ).then((response) => console.log("ggg",response))
+                    ).then((response) => console.log("video bien transmis",response))
             this.toggleChoiceImportModal();
         }).catch(e => this.toggleChoiceImportModal());
     }
@@ -205,29 +245,25 @@ export default class IncidentForm extends React.Component {
             height: 400,
             cropping: true,
             includeBase64: true,
-        }).then(images => {
-            this.setState({
-                images: [...this.state.images, images]
-            }); 
-            fetch("http://192.168.43.41:3001/image", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "fileData":images.data,// this.state.fileData,
-                    "filePath": images.path,
-                   
-                    "fileUri": images.fileUri,
-
-
-                })
-            })
-                .then(res => res.json())
-                .then(r=>console.log(r))
-            this.toggleChoiceImportModal();
-        });
-    }
+        }).then(images => {  
+            console.log('-----------------------------');
+           
+           this.setState({
+               // images : ''
+                           images: [...this.state.images, ...images.map(i => {
+                               return i
+                           })]
+                      });
+                      RNFetchBlob.fetch('POST', 'https://0b191ae7349e.ngrok.io/image', {
+                       'Content-Type' : 'multipart/form-data',
+                     }, [
+                       // element with property `filename` will be transformed into `file` in form data
+                       { name : 'image', filename : name, data: images[0].data},
+                     ]
+                   ).then(console.log)
+           this.toggleChoiceImportModal();
+       }).catch(e => this.toggleChoiceImportModal());
+   }
 /* //directly foto,,l9dima
     handleDirectlyTakePhoto() {
         ImagePicker.openCamera({
@@ -242,18 +278,8 @@ export default class IncidentForm extends React.Component {
         });
     } */
 
-    handleDirectlyTakeVideo() {
-        ImagePicker.openCamera({
-            mediaType: 'video',
-        }).then(video => {
-            this.setState({
-                videos: [...this.state.videos, video
-                ]
-            });
-            this.toggleChoiceImportModal();
-        });
-    }
-/*  */
+  
+
     toggleChoiceImportModal() {
         this.setState({ isChoiceImportModalVisible: !this.state.isChoiceImportModalVisible });
     }
@@ -318,7 +344,7 @@ export default class IncidentForm extends React.Component {
                         <Button
                             style={{ width: 90, justifyContent: 'center' }}
                             onPress={() => {
-                                this.backNavigation()
+                                this.savedata()
                                 Toast.show({
                                     text: "Operation successful!",
                                     buttonText: "Okay",
@@ -341,22 +367,32 @@ export default class IncidentForm extends React.Component {
                     </Text>
                     
                     <Form style={{ paddingTop: 4 }}>
-                        
+                    
+                  
                         <View style={{ paddingBottom: 4 }}>
-                            <Text style={[{ fontWeight: 'bold' }, styles.textColor]}>
+                            <Text style={[{ fontWeight: 'bold' }, styles.textColor,label='description',]}>
                                 Description:
                             </Text>
-                            <Textarea rowSpan={3} bordered placeholder="Textarea" />
+                            <Textarea rowSpan={3} bordered placeholder="Textarea" 
+                            label='description'
+                         //   value={this.state.form.description}
+                          onChangeText={(text)=>this.setdescription(text)}
+                            />
+                           
                         </View>
+                       
                         
                         <View style={{ paddingBottom: 4 }}>
                             <Text style={[{ fontWeight: 'bold' }, styles.textColor]}>
                                 Incident Type :
                             </Text>
                             <Item regular>
-                                <Picker selectedValue="gggg">
+                                <Picker selectedValue={this.state.PickerValueHolder} 
+                                            onValueChange={(itemValue, itemIndex) => this.setState({PickerValueHolder: itemValue})} >
+ 
+
                                     <Picker.Item label="accident" value="accident" />
-                                    <Picker.Item label="flood" value="floof" />
+                                    <Picker.Item label="flood" value="flood"/>
                                     <Picker.Item label="earthquake" value="earthquake" />
                                     <Picker.Item label="fire" value="fire" />
 
@@ -375,8 +411,12 @@ export default class IncidentForm extends React.Component {
                                 />
                             </View>
                         </View>
+                        <View>
+                     
+
+                      </View>
                         </ScrollView>
-                      
+                   
                         <View style={{ paddingBottom: 4 }}>
                             <Text style={[{ fontWeight: 'bold' }, styles.textColor]}>
                                 Import {type === 'photo' ? 'photo :' : 'video :'}
