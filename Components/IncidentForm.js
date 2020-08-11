@@ -81,21 +81,38 @@ export default class IncidentForm extends React.Component {
     async savedata  (props){
         console.warn('my form values')
         this.backNavigation()
-           fetch("http://192.168.43.41:3001/savedata",{
+        let { images, videos } = this.state;
+        console.log(images, videos);
+        const split_image = images[0].path.split('/');
+        const name_image = split_image[split_image.length-1];
+        const split_video = videos[0].path.split('/');
+        const name_video = split_video[split_video.length-1];
+        RNFetchBlob.fetch('POST', 'https://85efff0a59d7.ngrok.io/all', {
+            'Content-Type' : 'multipart/form-data',
+            }, [
+            // element with property `filename` will be transformed into `file` in form data
+                { name : 'image', filename : name_image, data: RNFetchBlob.wrap(images[0].path)},
+                { name : 'video', filename : name_video, data : RNFetchBlob.wrap(videos[0].path)},
+                { name : 'description', data : this.state.form.description },
+                { name : 'incident_type', data : this.state.PickerValueHolder }
+            ]
+        ).then(console.log)
+           /*fetch("http://192.168.43.41:3001/all",{
              method:"POST",
              headers: {
               'Content-Type': 'application/json'
             },
             body:JSON.stringify({
             //  "description":this.state.form.description,
-            "description" :this.state.form.description,
+            "description" :this.state.form.description,// 
             "incident_type":this.state.PickerValueHolder,
+      // "position" :  position.coords.latitude,
               
     
     
             })
            })
-           .then(res=>res.json())
+           .then(res=>res.json())*/
          
          }
     handleChooseMultiplePhoto() {
@@ -112,27 +129,30 @@ export default class IncidentForm extends React.Component {
             includeBase64: true,//image to string
           
         }).then(images => {  
-             console.log('-----------------------------');
+            console.log('Image selected');
              //console.log(images);
             // let data= JSON.parse(images);
-            console.log(JSON.stringify(images))
+            // console.log(JSON.stringify(images))
             const split = images[0].path.split('/');
             const name = split[split.length-1];
-            console.log(split, name)
+            // console.log(split, name)
             this.setState({
                 // images : ''
                             images: [...this.state.images, ...images.map(i => {
                                 return i
                             })]
                        });
-                       RNFetchBlob.fetch('POST', 'https://0b191ae7349e.ngrok.io/image', {
+                       /*RNFetchBlob.fetch('POST', 'https://85efff0a59d7.ngrok.io/all', {
                         'Content-Type' : 'multipart/form-data',
                       }, [
                         // element with property `filename` will be transformed into `file` in form data
                         { name : 'image', filename : name, data: images[0].data},
                       ]
-                    ).then(console.log)
+                      //
+                      
+                    ).then(console.log)*/
             this.toggleChoiceImportModal();
+          
         }).catch(e => this.toggleChoiceImportModal());
     }
     //video from camera 
@@ -140,22 +160,13 @@ export default class IncidentForm extends React.Component {
         ImagePicker.openCamera({
            mediaType: 'video',
        }).then(video => {
-       
+        console.log("directly added video")
            this.setState({
+               
                videos: [...this.state.videos, video
                ]
            });
-           const split = videos[0].path.split('/');
-           const name = split[split.length-1];
-           RNFetchBlob.fetch('POST', 'https://8cf63cea07d1.ngrok.io/video3', {
-            'Content-Type' : 'multipart/form-data',
-          }, [
-            // element with property `filename` will be transformed into `file` in form data
-           /*  { name : 'videos', filename : name, data: "RNFetchBlob-file://"+name } */
-           /* { name: 'doc', filename: data.fileName, type: data.type, data: RNFetchBlob.wrap(data.path) }, */
-           { name: 'videos', filename: name, data: RNFetchBlob.wrap(videos[0].path) }
-          ]
-        ).then((response) => console.log("ggg",response))
+           
 this.toggleChoiceImportModal();
 }).catch(e => this.toggleChoiceImportModal());
 }
@@ -173,10 +184,10 @@ this.toggleChoiceImportModal();
             multiple: true,
       
         }).then(videos => {  
-             console.log('-----------------------------');
+            console.log('Video selected');
              //console.log(images);
             // let data= JSON.parse(images);
-            console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",JSON.stringify(videos))
+            //console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",JSON.stringify(videos))
           
             const split = videos[0].path.split('/');
             const name = split[split.length-1];
@@ -187,98 +198,35 @@ this.toggleChoiceImportModal();
                                 return i
                             })]
                        });
-                       RNFetchBlob.fetch('POST', 'https://0b191ae7349e.ngrok.io/video2', {
+                       /*RNFetchBlob.fetch('POST', ' https://85efff0a59d7.ngrok.io/all', {
                         'Content-Type' : 'multipart/form-data',
                       }, [
                         // element with property `filename` will be transformed into `file` in form data
                        /*  { name : 'videos', filename : name, data: "RNFetchBlob-file://"+name } */
-                       /* { name: 'doc', filename: data.fileName, type: data.type, data: RNFetchBlob.wrap(data.path) }, */
+                       /* { name: 'doc', filename: data.fileName, type: data.type, data: RNFetchBlob.wrap(data.path) }, 
                        { name: 'videos', filename: name, data: RNFetchBlob.wrap(videos[0].path) }
                       ]
-                    ).then((response) => console.log("video bien transmis",response))
+                    ).then((response) => console.log("video bien transmis",response))*/
             this.toggleChoiceImportModal();
         }).catch(e => this.toggleChoiceImportModal());
     }
 
-  /*   //directlu jdida
-    handleDirectlyTakePhoto() {
-        ImagePicker.openCamera({
-            width: 300,
-            height: 400,
-            cropping: true,
-            includeBase64: true,
-            
-        }).then(image => {
-            console.log('--------directly jdia--');
-            console.log(JSON.stringify(images));
-            this.setState({
-                
-                images: [...this.state.images, image]
-                
-            });
-          
-            fetch("http://192.168.1.8:3001/image", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "fileData":images[0].data,// this.state.fileData,
-                    "filePath": images[0].path,
-                    "fileUri": images[0].fileUri,
 
-
-                })
-            })
-                .then(res => res.json())
-                .then(r=>console.log(r))
-            this.toggleChoiceImportModal();
-        
-           
+  //ahaya fnct :p 
+  handleDirectlyTakePhoto() {
+    ImagePicker.openCamera({
+        width: 300,
+        height: 400,
+        cropping: true,
+    }).then(image => {
+        console.log("directly added photo")
+        console.log(image);
+        this.setState({
+            images: [...this.state.images, image]
         });
-    } */
-    //9dima v2
- 
-    handleDirectlyTakePhoto() {
-        ImagePicker.openCamera({
-            width: 300,
-            height: 400,
-            cropping: true,
-            includeBase64: true,
-        }).then(images => {  
-            console.log('-----------------------------');
-           
-           this.setState({
-               // images : ''
-                           images: [...this.state.images, ...images.map(i => {
-                               return i
-                           })]
-                      });
-                      RNFetchBlob.fetch('POST', 'https://0b191ae7349e.ngrok.io/image', {
-                       'Content-Type' : 'multipart/form-data',
-                     }, [
-                       // element with property `filename` will be transformed into `file` in form data
-                       { name : 'image', filename : name, data: images[0].data},
-                     ]
-                   ).then(console.log)
-           this.toggleChoiceImportModal();
-       }).catch(e => this.toggleChoiceImportModal());
-   }
-/* //directly foto,,l9dima
-    handleDirectlyTakePhoto() {
-        ImagePicker.openCamera({
-            width: 300,
-            height: 400,
-            cropping: true,
-        }).then(image => {
-            this.setState({
-                images: [...this.state.images, image]
-            });
-            this.toggleChoiceImportModal();
-        });
-    } */
-
-  
+        this.toggleChoiceImportModal();
+    });
+} 
 
     toggleChoiceImportModal() {
         this.setState({ isChoiceImportModalVisible: !this.state.isChoiceImportModalVisible });
@@ -344,7 +292,7 @@ this.toggleChoiceImportModal();
                         <Button
                             style={{ width: 90, justifyContent: 'center' }}
                             onPress={() => {
-                                this.savedata()
+                                this.savedata();
                                 Toast.show({
                                     text: "Operation successful!",
                                     buttonText: "Okay",
@@ -469,7 +417,8 @@ this.toggleChoiceImportModal();
                                     style={{ width: 200, justifyContent: 'center' }}
                                     onPress={() => {
                                         if (type === 'photo') {
-                                            this.handleChooseMultiplePhoto()
+                                            this.handleChooseMultiplePhoto();
+                                           
                                         } else {
                                             this.handleChooseMultiplevideo()
                                         }

@@ -132,14 +132,14 @@ export default class InscriptionScreen extends React.Component {
 async sendCred  (props){
     console.warn('my form values', this.state.form)
      
-       fetch("http://192.168.1.5:3004/user",{
+       fetch("http://192.168.43.41:3001/user",{
          method:"POST",
          headers: {
           'Content-Type': 'application/json'
         },
         body:JSON.stringify({
           "email":this.state.form.email,
-          "password":CryptoJS.AES.encrypt(this.state.form.password, 'secret key 123').toString() ,
+          "password":this.state.form.password/* CryptoJS.AES.encrypt(this.state.form.password, 'secret key 123').toString() */ ,
           "address":this.state.form.address,
           'firstname': this.state.form.firstname,
           "lastname":this.state.form.lastname,
