@@ -15,23 +15,23 @@ import {
     Header,
     List,
     Thumbnail,
-    Body, Title, ListItem,
+    Body, Title, ListItem
 } from "native-base";
 import Nav from "./Nav";
-import { ScrollView, StyleSheet, Modal, TouchableOpacity, Image ,TouchableHighlight} from "react-native";
+import { ScrollView, StyleSheet, Modal, TouchableOpacity, Image, TouchableHighlight ,AsyncStorage} from "react-native";
 import ImagePicker from 'react-native-image-crop-picker';
 import MapView from 'react-native-maps';
 import ReportScreen from './ReportScreen';
 import RNFetchBlob from 'rn-fetch-blob'
 
 export default class IncidentForm extends React.Component {
-    
-    
-//pour recuperer la valeur de formulaire  dans la base
+
+
+    //pour recuperer la valeur de formulaire  dans la base
 
     constructor(props) {
         super(props);
-        
+
         this.state = {
             isChoiceImportModalVisible: false,
             images: [],
@@ -43,33 +43,33 @@ export default class IncidentForm extends React.Component {
             fileData: null,
             filepath: null,
             file: null,
-         
+            mapData: null
         }
-       /* this.state = {
-            form: {
-                description: null,
-                
-            }
-        }  */
-        
+        /* this.state = {
+             form: {
+                 description: null,
+                 
+             }
+         }  */
+
     }
 
     setdescription(text) {
         this.setState({
             form: {
                 description: text,
-                
+
             }
         });
     }
-    
+
     setfileUri(text) {
         this.setState({
             form: {
                 fileData: this.state.form.fileData,
                 file: this.state.form.filepath,
                 fileUri: text,
-              
+
 
             }
         });
@@ -77,44 +77,62 @@ export default class IncidentForm extends React.Component {
     backNavigation = () => {
         this.props.navigation.navigate("Incident")
     };
-    //save description to database
-    async savedata  (props){
-        console.warn('my form values')
+
+    //saveall to database
+    async savedata(props) {
+
+        await AsyncStorage.getItem('mapCoord').then(datax => {
+
+            console.log("onRegionChange: ", datax);
+            this.setState({
+                mapData: datax
+            });
+        });
+
+
         this.backNavigation()
         let { images, videos } = this.state;
-        console.log(images, videos);
+        console.log(images, videos );
         const split_image = images[0].path.split('/');
-        const name_image = split_image[split_image.length-1];
-        const split_video = videos[0].path.split('/');
-        const name_video = split_video[split_video.length-1];
-        RNFetchBlob.fetch('POST', 'https://85efff0a59d7.ngrok.io/all', {
-            'Content-Type' : 'multipart/form-data',
-            }, [
+        const name_image = split_image[split_image.length - 1];
+           const split_video = videos[0].path.split('/');
+            const name_video = split_video[split_video.length-1]; 
+            const token = await AsyncStorage.getItem('token');
+        RNFetchBlob.fetch('POST', 'https://66ef346193a5.ngrok.io/all', {
+            'Content-Type': 'multipart/form-data',
+            'token': token,
+        }, [
+           
             // element with property `filename` will be transformed into `file` in form data
-                { name : 'image', filename : name_image, data: RNFetchBlob.wrap(images[0].path)},
-                { name : 'video', filename : name_video, data : RNFetchBlob.wrap(videos[0].path)},
-                { name : 'description', data : this.state.form.description },
-                { name : 'incident_type', data : this.state.PickerValueHolder }
-            ]
-        ).then(console.log)
-           /*fetch("http://192.168.43.41:3001/all",{
-             method:"POST",
-             headers: {
-              'Content-Type': 'application/json'
-            },
-            body:JSON.stringify({
-            //  "description":this.state.form.description,
-            "description" :this.state.form.description,// 
-            "incident_type":this.state.PickerValueHolder,
-      // "position" :  position.coords.latitude,
-              
-    
-    
-            })
-           })
-           .then(res=>res.json())*/
+            { name: 'image', filename: name_image, data: RNFetchBlob.wrap(images[0].path) },
+            { name : 'video', filename : name_video, data : RNFetchBlob.wrap(videos[0].path)}, 
+            { name: 'description', data: this.state.form.description },
+            { name: 'incident_type', data: this.state.PickerValueHolder },
+            { name: 'position', data: this.state.mapData } ,
+             
+          /*   { name: 'email', data: this.state.email },
+            { name: 'password', data: this.state.password }, */
          
-         }
+        ]
+        ).then(console.log)
+        /*fetch("http://192.168.43.41:3001/all",{
+          method:"POST",
+          headers: {
+           'Content-Type': 'application/json'
+         },
+         body:JSON.stringify({
+         //  "description":this.state.form.description,
+         "description" :this.state.form.description,// 
+         "incident_type":this.state.PickerValueHolder,
+   // "position" :  position.coords.latitude,
+           
+ 
+ 
+         })
+        })
+        .then(res=>res.json())*/
+
+    }
     handleChooseMultiplePhoto() {
 
 
@@ -127,106 +145,106 @@ export default class IncidentForm extends React.Component {
             includeExif: true,
             forceJpg: true,
             includeBase64: true,//image to string
-          
-        }).then(images => {  
+
+        }).then(images => {
             console.log('Image selected');
-             //console.log(images);
+            //console.log(images);
             // let data= JSON.parse(images);
             // console.log(JSON.stringify(images))
             const split = images[0].path.split('/');
-            const name = split[split.length-1];
+            const name = split[split.length - 1];
             // console.log(split, name)
             this.setState({
                 // images : ''
-                            images: [...this.state.images, ...images.map(i => {
-                                return i
-                            })]
-                       });
-                       /*RNFetchBlob.fetch('POST', 'https://85efff0a59d7.ngrok.io/all', {
-                        'Content-Type' : 'multipart/form-data',
-                      }, [
-                        // element with property `filename` will be transformed into `file` in form data
-                        { name : 'image', filename : name, data: images[0].data},
-                      ]
-                      //
-                      
-                    ).then(console.log)*/
+                images: [...this.state.images, ...images.map(i => {
+                    return i
+                })]
+            });
+            /*RNFetchBlob.fetch('POST', 'https://85efff0a59d7.ngrok.io/all', {
+             'Content-Type' : 'multipart/form-data',
+           }, [
+             // element with property `filename` will be transformed into `file` in form data
+             { name : 'image', filename : name, data: images[0].data},
+           ]
+           //
+           
+         ).then(console.log)*/
             this.toggleChoiceImportModal();
-          
+
         }).catch(e => this.toggleChoiceImportModal());
     }
     //video from camera 
     handleDirectlyTakeVideo() {
         ImagePicker.openCamera({
-           mediaType: 'video',
-       }).then(video => {
-        console.log("directly added video")
-           this.setState({
-               
-               videos: [...this.state.videos, video
-               ]
-           });
-           
-this.toggleChoiceImportModal();
-}).catch(e => this.toggleChoiceImportModal());
-}
+            mediaType: 'video',
+        }).then(video => {
+            console.log("directly added video")
+            this.setState({
+
+                videos: [...this.state.videos, video
+                ]
+            });
+
+            this.toggleChoiceImportModal();
+        }).catch(e => this.toggleChoiceImportModal());
+    }
     // video final
     handleChooseMultiplevideo() {
         ImagePicker.openPicker({
             mediaType: "video",
             width: 100,
             height: 150,
-           //cropping: true,
+            //cropping: true,
             waitAnimationEnd: false,
             includeExif: true,
-           // forceJpg: true,
-         includeBase64: true,//image to string
+            // forceJpg: true,
+            includeBase64: true,//image to string
             multiple: true,
-      
-        }).then(videos => {  
+
+        }).then(videos => {
             console.log('Video selected');
-             //console.log(images);
+            //console.log(images);
             // let data= JSON.parse(images);
-            //console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",JSON.stringify(videos))
-          
+
+
             const split = videos[0].path.split('/');
-            const name = split[split.length-1];
+            const name = split[split.length - 1];
             this.setState({
 
-             
+
                 videos: [...this.state.videos, ...videos.map(i => {
-                                return i
-                            })]
-                       });
-                       /*RNFetchBlob.fetch('POST', ' https://85efff0a59d7.ngrok.io/all', {
-                        'Content-Type' : 'multipart/form-data',
-                      }, [
-                        // element with property `filename` will be transformed into `file` in form data
-                       /*  { name : 'videos', filename : name, data: "RNFetchBlob-file://"+name } */
-                       /* { name: 'doc', filename: data.fileName, type: data.type, data: RNFetchBlob.wrap(data.path) }, 
-                       { name: 'videos', filename: name, data: RNFetchBlob.wrap(videos[0].path) }
-                      ]
-                    ).then((response) => console.log("video bien transmis",response))*/
+                    return i
+                })]
+            });
+            /*RNFetchBlob.fetch('POST', ' https://85efff0a59d7.ngrok.io/all', {
+             'Content-Type' : 'multipart/form-data',
+           }, [
+             // element with property `filename` will be transformed into `file` in form data
+            /*  { name : 'videos', filename : name, data: "RNFetchBlob-file://"+name } */
+            /* { name: 'doc', filename: data.fileName, type: data.type, data: RNFetchBlob.wrap(data.path) }, 
+            { name: 'videos', filename: name, data: RNFetchBlob.wrap(videos[0].path) }
+           ]
+         ).then((response) => console.log("video bien transmis",response))*/
             this.toggleChoiceImportModal();
         }).catch(e => this.toggleChoiceImportModal());
     }
 
 
-  //ahaya fnct :p 
-  handleDirectlyTakePhoto() {
-    ImagePicker.openCamera({
-        width: 300,
-        height: 400,
-        cropping: true,
-    }).then(image => {
-        console.log("directly added photo")
-        console.log(image);
-        this.setState({
-            images: [...this.state.images, image]
+    //ahaya fnct :p 
+    handleDirectlyTakePhoto() {
+        ImagePicker.openCamera({
+            width: 300,
+            height: 400,
+            cropping: true,
+        }).then(image => {
+            console.log("directly added photo")
+            console.log(image);
+            this.setState({
+                images: [...this.state.images, image]
+            });
+            this.toggleChoiceImportModal();
         });
-        this.toggleChoiceImportModal();
-    });
-} 
+    }
 
     toggleChoiceImportModal() {
         this.setState({ isChoiceImportModalVisible: !this.state.isChoiceImportModalVisible });
@@ -305,71 +323,74 @@ this.toggleChoiceImportModal();
                         </Button>
                     </Right>
                 </Header>
-                
+
                 <ScrollView style={{ flex: 1, padding: 6 }}>
                     <Text style={[styles.textColor]}> easily create any type of online incident
                     enter the basics of what happened ,capture a photo or a video ,and ensure the right people are notified.
-                    
+
 
 
                     </Text>
-                    
+
                     <Form style={{ paddingTop: 4 }}>
-                    
-                  
+
+
                         <View style={{ paddingBottom: 4 }}>
-                            <Text style={[{ fontWeight: 'bold' }, styles.textColor,label='description',]}>
+                            <Text style={[{ fontWeight: 'bold' }, styles.textColor, label = 'description',]}>
                                 Description:
                             </Text>
-                            <Textarea rowSpan={3} bordered placeholder="Textarea" 
-                            label='description'
-                         //   value={this.state.form.description}
-                          onChangeText={(text)=>this.setdescription(text)}
+                            <Textarea rowSpan={3} bordered placeholder="Textarea"
+                                label='description'
+                                //   value={this.state.form.description}
+                                onChangeText={(text) => this.setdescription(text)}
                             />
-                           
+
                         </View>
-                       
-                        
+
+
                         <View style={{ paddingBottom: 4 }}>
                             <Text style={[{ fontWeight: 'bold' }, styles.textColor]}>
                                 Incident Type :
                             </Text>
                             <Item regular>
-                                <Picker selectedValue={this.state.PickerValueHolder} 
-                                            onValueChange={(itemValue, itemIndex) => this.setState({PickerValueHolder: itemValue})} >
- 
+                                <Picker selectedValue={this.state.PickerValueHolder}
+                                    onValueChange={(itemValue, itemIndex) => this.setState({ PickerValueHolder: itemValue })} >
 
-                                    <Picker.Item label="accident" value="accident" />
-                                    <Picker.Item label="flood" value="flood"/>
-                                    <Picker.Item label="earthquake" value="earthquake" />
-                                    <Picker.Item label="fire" value="fire" />
+
+                                    <Picker.Item label="Accident" value="Accident" />
+                                    <Picker.Item label="Flood" value="flood" />
+                                    <Picker.Item label="Earthquake" value="earthquake" />
+                                    <Picker.Item label="Fire" value="fire" />
+                            
+                                    <Picker.Item label="Tornadoes" value="Tornadoes" />
+                                    <Picker.Item label="Blizzards" value="Blizzards" />
+
 
                                 </Picker>
                             </Item>
                         </View>
                         <ScrollView>
-                        <View style={{ paddingBottom: 4 }}>
-                            <Text style={[{ fontWeight: 'bold' }, styles.textColor]}>
-                                Position :
+                            <View style={{ paddingBottom: 4 }}>
+                                <Text style={[{ fontWeight: 'bold' }, styles.textColor]}>
+                                    Position :
                             </Text>
-                            <View style={{ height: 250 }}>
-                                <ReportScreen
-                                    style={{ height: 70 }}
-
-                                />
+                                <View style={{ height: 250 }}>
+                                    <ReportScreen //ya3n
+                                        style={{ height: 70 }}
+                                    />
+                                </View>
                             </View>
-                        </View>
-                        <View>
-                     
+                            <View>
 
-                      </View>
+
+                            </View>
                         </ScrollView>
-                   
+
                         <View style={{ paddingBottom: 4 }}>
                             <Text style={[{ fontWeight: 'bold' }, styles.textColor]}>
                                 Import {type === 'photo' ? 'photo :' : 'video :'}
                             </Text>
-                            
+
                             <View >
                                 <List>
                                     {this.state.videos ? this.state.videos.map((video, index) =>
@@ -378,16 +399,16 @@ this.toggleChoiceImportModal();
                                         this.renderAsset(image, index)) : null}
                                 </List>
 
-                                
+
                                 <View style={{ padding: 6, minWidth: 300, justifyContent: 'center' }}>
                                     <Button transparent iconLeft full onPress={this.toggleChoiceImportModal.bind(this)}>
                                         <Icon name='add' />
                                         <Text>add media</Text>
                                     </Button>
                                 </View>
-                                
+
                             </View>
-                            
+
                         </View>
                     </Form>
                 </ScrollView>
@@ -411,14 +432,14 @@ this.toggleChoiceImportModal();
                                     <Icon style={{ width: 20, color: '#fff' }} name='close' />
                                 </Button>
                             </Right>
-                            <Text style={{fontWeight: 'bold',fontSize: 20,fontWeight: '600',color:"#D12000" }}>Please choose an option:</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 20, fontWeight: '600', color: "#D12000" }}>Please choose an option:</Text>
                             <View style={{ paddingTop: 6 }}>
                                 <Button bordered
                                     style={{ width: 200, justifyContent: 'center' }}
                                     onPress={() => {
                                         if (type === 'photo') {
                                             this.handleChooseMultiplePhoto();
-                                           
+
                                         } else {
                                             this.handleChooseMultiplevideo()
                                         }
@@ -497,7 +518,7 @@ this.toggleChoiceImportModal();
     }
 }
 const styles = StyleSheet.create({
-    textColor: { },
+    textColor: {},
     divider: {
         borderBottomColor: '#4A5568',
         borderBottomWidth: 2, minWidth: '100%'
@@ -552,8 +573,8 @@ handleChooseMultiplePhoto() {
         includeExif: true,
         forceJpg: true,
         includeBase64: true,// added this jetni donne f console
-      
-    }).then(images => {  
+
+    }).then(images => {
          console.log('-----------------------------');
          //console.log(images);
         // let data= JSON.parse(images);
@@ -567,7 +588,7 @@ handleChooseMultiplePhoto() {
                    });
 
         //  console.log('images', JSON.stringify(images));
-        
+
         fetch("http://192.168.1.8:3001/image", {
             method: "POST",
             headers: {
@@ -586,18 +607,18 @@ handleChooseMultiplePhoto() {
         this.toggleChoiceImportModal();
     }).catch(e => this.toggleChoiceImportModal());
 }
-//****************************************new one  
+//****************************************new one
 handleChooseMultiplevideo() {
     ImagePicker.openPicker({
         multiple: true,
         mediaType: "video",
         includeBase64: true,
     }).then(videos => {
-      
+
         console.log(JSON.stringify(videos.data));
 
         this.setState({
-          
+
             videos: [...this.state.videos, ...videos.map(video => {
                 return video
             })]

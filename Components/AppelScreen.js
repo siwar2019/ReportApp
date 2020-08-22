@@ -155,7 +155,7 @@ callPort= () => {
               
             </ListItem>
             <Right>
-                <Button transparent onPress={() => this.props.navigation.navigate("StackScreenChat")}>
+                <Button transparent onPress={() => this.props.navigation.navigate("Chatbot")}>
                   <Text>Help?</Text>
                 </Button>
               </Right>

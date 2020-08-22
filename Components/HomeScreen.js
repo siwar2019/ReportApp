@@ -48,8 +48,10 @@ _loadInitialState=async()=> {
       .then((res) => {
         //console.warn(res.message)
         if (res.succes === true) {
-            console.warn("here")
+            console.log("here", res)
      AsyncStorage.setItem('user', res.user);
+     AsyncStorage.setItem('token', res.token);
+
        this.props.navigation.navigate('Navigation');
         } else {
           //  this.props.navigation.navigate('Navigation');
@@ -93,10 +95,10 @@ _loadInitialState=async()=> {
 
                   
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate("Navigation")} >
+           {/*    <TouchableOpacity onPress={() => this.props.navigation.navigate("Navigation")} >
 
 <Text style={styles.whiteColor}>log</Text>
-</TouchableOpacity>
+</TouchableOpacity> */}
               <TouchableOpacity onPress={() => this.props.navigation.navigate("InscriptionScreen")} >
 
               <Text style={styles.whiteColor}>No Account ? Create one</Text>

@@ -43,6 +43,7 @@ export default class InscriptionScreen extends React.Component {
                 lastname: null,
                 tel: null,
                 address: null,
+                
             }
         }
     }
@@ -96,7 +97,7 @@ export default class InscriptionScreen extends React.Component {
             form: {
                 email: this.state.form.email,
                 password: this.state.form.password,
-                lastname: this.state.form.firstname,
+                lastname: this.state.form.lastname,
                 firstname:text ,
                 address: this.state.form.address,
                 tel: this.state.form.tel,
@@ -139,11 +140,12 @@ async sendCred  (props){
         },
         body:JSON.stringify({
           "email":this.state.form.email,
-          "password":this.state.form.password/* CryptoJS.AES.encrypt(this.state.form.password, 'secret key 123').toString() */ ,
+          "password": this.state.form.password /* CryptoJS.AES.encrypt(this.state.form.password, 'secret key 123').toString() */ ,
           "address":this.state.form.address,
           'firstname': this.state.form.firstname,
           "lastname":this.state.form.lastname,
           'tel': this.state.form.tel,
+          'isConfident': false,
 
 
         })

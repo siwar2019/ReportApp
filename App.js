@@ -123,7 +123,7 @@ function Navigation({ navigation }) {
             <MaterialCommunityIcons name="comment-text-multiple" color={color} size={size} />
           ),
         }} />
-      <Tab.Screen name="report" component={ReportScreen} ></Tab.Screen>
+    
     </Tab.Navigator>
 
   );

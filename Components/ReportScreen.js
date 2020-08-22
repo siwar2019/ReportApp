@@ -1,78 +1,3 @@
-//https://developer.apple.com/forums/thread/124715 
-//https://github.com/booxood/react-native-file-upload 
-//jareb hatha : https://stackoverflow.com/questions/53492927/react-native-video-file-upload 
-//https://medium.com/react-native-training/uploading-videos-from-react-native-c79f520b9ae1 
-//https://stackoverflow.com/questions/44552073/upload-video-in-react-native hatha mta3 med
-/* 'use strict';
-
-var React = require('react-native');
-var FileUpload = require('NativeModules').FileUpload;
-
-var {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-} = React;
-
-var FileUploadDemo = React.createClass({
-  componentDidMount: function() {
-    var obj = {
-        uploadUrl: 'http://127.0.0.1:3000',
-        method: 'POST', // default 'POST',support 'POST' and 'PUT'
-        headers: {
-          'Accept': 'application/json',
-        },
-        fields: {
-            'hello': 'world',
-        },
-        files: [
-          {
-            name: 'one', // optional, if none then `filename` is used instead
-            filename: 'one.w4a', // require, file name
-            filepath: '/xxx/one.w4a', // require, file absoluete path
-            filetype: 'audio/x-m4a', // options, if none, will get mimetype from `filepath` extension
-          },
-        ]
-    };
-    FileUpload.upload(obj, function(err, result) {
-      console.log('upload:', err, result);
-    })
-  },
-  render: function() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-      </View>
-    );
-  }
-});
-
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-});
-
-AppRegistry.registerComponent('FileUploadDemo', () => FileUploadDemo); */
-
-
-
-
-
-
-
-
 import React, { Component } from "react";
 import {
   View,
@@ -80,28 +5,29 @@ import {
   Button,
   StyleSheet,
   Text,
-  Dimensions
+  Dimensions,
+  AsyncStorage
 } from "react-native";
 import MapView from "react-native-maps";
 
 export default class ReportScreen extends Component {
 
 
-  state =  {
+  state = {
 
-      focusedLocation: {
-        latitude: 35.79981038046146,
-        longitude: 10.341584796875004,
-        latitudeDelta: 0.0122,
-        longitudeDelta:
-          Dimensions.get("window").width /
-          Dimensions.get("window").height *
-          0.0122
-      },
+    focusedLocation: {
+      latitude: 35.79981038046146,
+      longitude: 10.341584796875004,
+      latitudeDelta: 0.0122,
+      longitudeDelta:
+        Dimensions.get("window").width /
+        Dimensions.get("window").height *
+        0.0122
+    },
 
-      
+
   }
- 
+
   getLocationHandler = () => {
     navigator.geolocation.getCurrentPosition(pos => {
       const coordsEvent = {
@@ -114,10 +40,10 @@ export default class ReportScreen extends Component {
       };
       this.pickLocationHandler(coordsEvent);
     },
-  err => {
-    console.log(err);
-    alert("Fetching the Position failed, please pick one manually!");
-  })
+      err => {
+        console.log(err);
+        alert("Fetching the Position failed, please pick one manually!");
+      })
   }
 
 
@@ -153,10 +79,27 @@ export default class ReportScreen extends Component {
       };
       this.pickLocationHandler(coordsEvent);
     },
-  err => {
-    console.log(err);
-    alert("Fetching the Position failed, please pick one manually!");
-  })
+      err => {
+        console.log(err);
+        alert("Fetching the Position failed, please pick one manually!");
+      })
+  }
+
+  async onRegionChange(r) {
+
+    console.log("onRegionChangeReportSceen: ", r);
+
+    await AsyncStorage.setItem('mapCoord', JSON.stringify(r));
+
+
+    this.setState({
+      focusedLocation: {
+        latitude: r.latitude,
+        longitude: r.longitude,
+        latitudeDelta: 0.0043,
+        longitudeDelta: 0.0034
+      }
+    });
   }
 
   render() {
@@ -174,6 +117,7 @@ export default class ReportScreen extends Component {
           style={styles.map}
           onPress={this.pickLocationHandler}
           ref={ref => this.map = ref}
+          onRegionChangeComplete={this.onRegionChange.bind(this)}
         >
           {marker}
         </MapView>
