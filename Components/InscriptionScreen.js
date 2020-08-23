@@ -21,11 +21,11 @@ import {
     ListItem,
     InputGroup,
     Input,
-    Icon,
     Button,
     Footer,
     Item,Body
 } from 'native-base';
+import Icon from 'react-native-ionicons';
 import CryptoJS from "react-native-crypto-js";
 export default class InscriptionScreen extends React.Component {
     constructor(props) {

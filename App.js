@@ -15,10 +15,13 @@ import AppelScreen from './Components/AppelScreen';
 import ChatbotScreen from './Components/ChatbotScreen';
 import InscriptionScreen from './Components/InscriptionScreen';
 import IncidentForm from "./Components/IncidentForm";
+import LiveStream from "./Components/LiveStream";
 import Nav from "./Components/Nav";
 import { Root } from "native-base";
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {
+  Icon
+} from 'native-base';
 
 /* function StackScreenChat() {
   hethi en cas ou n7ebou on modifie lentete  avec un titre , f ana componenet
@@ -94,7 +97,7 @@ function Navigation({ navigation }) {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
+            <Icon type="MaterialIcons" name="home" color={color} size={size} />
           ),
         }}
 
@@ -103,7 +106,7 @@ function Navigation({ navigation }) {
         options={{
           tabBarLabel: 'Call urgency',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="cellphone-sound" color={color} size={size} />
+            <Icon type="MaterialIcons" name="phonelink-ring" color={color} size={size} />
           ),
         }}
       />
@@ -111,7 +114,7 @@ function Navigation({ navigation }) {
         options={{
           tabBarLabel: 'Incident',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="alarm-light" color={color} size={size} />
+            <Icon type="MaterialIcons" name="alarm" color={color} size={size} />
 
           ),
         }} />
@@ -120,7 +123,15 @@ function Navigation({ navigation }) {
         options={{
           tabBarLabel: 'Chatbot',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="comment-text-multiple" color={color} size={size} />
+            <Icon type="MaterialIcons" name="comment" color={color} size={size} />
+          ),
+        }} />
+
+        <Tab.Screen name="LiveStream" component={LiveStream}
+        options={{
+          tabBarLabel: 'LiveStream',
+          tabBarIcon: ({ color, size }) => (
+            <Icon type="MaterialIcons" name="camera-alt" color={color} size={size} />
           ),
         }} />
     
@@ -148,7 +159,7 @@ export default function App() {
             <Stack.Screen name="IncidentFormScreen" component={IncidentForm} />
             {/*kenet heka pour modifier l'entete fel fonction stackscreen chat **  <Stack.Screen name="StackScreenChat" component={StackScreenChat} /> */}
             <Stack.Screen name="Chatbot" component={ChatbotScreen} />
-
+            <Stack.Screen name="LiveStream" component={LiveStream} />
             <Stack.Screen name="Acceuil" component={AcceuilScreen} />
             <Stack.Screen name="Call urgency" component={AppelScreen} />
             <Stack.Screen name="Incident" component={IncidentScreen} />

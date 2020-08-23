@@ -8,7 +8,8 @@ import {
   ImageBackground,
   Linking,
 } from 'react-native';
-import {Button, Container, List, Right, Left, Thumbnail, Body, Text, ListItem,Header,Title,Icon} from 'native-base';
+import {Button, Container, List, Right, Left, Thumbnail, Body, Text, ListItem,Header,Title} from 'native-base';
+import Icon from 'react-native-ionicons';
 import call from 'react-native-phone-call';
 import Nav from "./Nav";
 

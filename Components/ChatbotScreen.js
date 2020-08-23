@@ -6,7 +6,8 @@ import {
   Image
 } from 'react-native';
 import ChatBot from 'react-native-chatbot';
-import {Container,Header,Left,Right,Button,Icon,Body,Title} from "native-base"
+import {Container,Header,Left,Right,Button,Body,Title} from "native-base";
+import Icon from 'react-native-ionicons';
 
 
 const steps = [

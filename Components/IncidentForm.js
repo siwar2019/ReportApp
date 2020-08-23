@@ -8,7 +8,6 @@ import {
     Left,
     Item,
     Toast,
-    Icon,
     Picker,
     Button,
     Right,
@@ -17,6 +16,7 @@ import {
     Thumbnail,
     Body, Title, ListItem
 } from "native-base";
+import Icon from 'react-native-ionicons';
 import Nav from "./Nav";
 import { ScrollView, StyleSheet, Modal, TouchableOpacity, Image, TouchableHighlight ,AsyncStorage} from "react-native";
 import ImagePicker from 'react-native-image-crop-picker';
@@ -98,7 +98,7 @@ export default class IncidentForm extends React.Component {
            const split_video = videos[0].path.split('/');
             const name_video = split_video[split_video.length-1]; 
             const token = await AsyncStorage.getItem('token');
-        RNFetchBlob.fetch('POST', 'https://66ef346193a5.ngrok.io/all', {
+        RNFetchBlob.fetch('POST', 'https://f3bb3aa1cb78.ngrok.io/all', {
             'Content-Type': 'multipart/form-data',
             'token': token,
         }, [

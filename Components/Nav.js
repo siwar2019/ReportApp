@@ -1,5 +1,6 @@
 import React from 'react'
-import {Button, Header, Title, Icon, Container, Left, Body, Right} from "native-base";
+import {Button, Header, Title, Container, Left, Body, Right} from "native-base";
+import Icon from 'react-native-ionicons';
 import {StyleSheet} from "react-native";
 
 export default function Nav () {
